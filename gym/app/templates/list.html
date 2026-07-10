@@ -133,31 +133,8 @@
         <a href="/customer" class="back-btn"><i class="fa-solid fa-chevron-left"></i></a>
         <h2>Select Payment Method</h2>
         
-        <!-- Toggle tabs for payment methods -->
-        <div style="display: flex; gap: 10px; margin-bottom: 25px; justify-content: center;">
-            <button type="button" id="tab-upi-btn" class="payment-tab active" onclick="switchPaymentTab('upi')"><i class="fa-solid fa-mobile-screen"></i> UPI Transfer</button>
-            <button type="button" id="tab-card-btn" class="payment-tab" onclick="switchPaymentTab('card')"><i class="fa-regular fa-credit-card"></i> Card / Stripe</button>
-        </div>
-
-        <!-- UPI Tab Content -->
-        <div class="payment-content" id="content-upi">
-            <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 25px; margin-bottom: 25px; box-sizing: border-box;">
-                <p style="margin: 0 0 15px; font-size: 0.88rem; color: #ff8c00; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Direct Transfer via UPI ID</p>
-
-                <!-- UPI Details & Copy -->
-                <div style="background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 10px; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; box-sizing: border-box;">
-                    <span style="font-size: 0.78rem; color: #a1a1a6; font-family: monospace; word-break: break-all;">iamaditya1202@oksbi</span>
-                    <button type="button" onclick="copyUpiId()" style="background: linear-gradient(135deg, #ff4500, #ff8c00); border: none; border-radius: 8px; padding: 6px 12px; color: #fff; font-size: 0.72rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0;">Copy ID</button>
-                </div>
-                <span id="upiToast" style="display: block; font-size: 0.72rem; color: #2ecc71; margin-top: 8px; font-weight: 700; opacity: 0; transition: opacity 0.3s ease;"><i class="fa-solid fa-circle-check"></i> UPI ID copied!</span>
-            </div>
-
-            <!-- Complete payment button -->
-            <a href="/success" class="btn-primary" style="margin-top: 10px; text-decoration: none;"><i class="fa-solid fa-circle-check"></i> I have scanned & paid</a>
-        </div>
-
-        <!-- Card/Stripe Tab Content -->
-        <div class="payment-content" id="content-card" style="display: none;">
+        <!-- Card/Stripe Content -->
+        <div class="payment-content" id="content-card">
             <p style="margin: 0 0 25px; font-size: 0.95rem; color: #a1a1a6; line-height: 1.5; text-align: center;">Pay securely via Stripe checkout gateway using credit card, debit card, or international cards.</p>
             <form action="{% url 'create-checkout-session' %}" method="POST" style="margin: 0; padding: 0; border: none; background: none; box-shadow: none;">
                 {% csrf_token %}
@@ -165,34 +142,5 @@
             </form>
         </div>
     </main>
-
-    <script>
-        function switchPaymentTab(tabId) {
-            document.getElementById("content-upi").style.display = tabId === "upi" ? "block" : "none";
-            document.getElementById("content-card").style.display = tabId === "card" ? "block" : "none";
-
-            const upiBtn = document.getElementById("tab-upi-btn");
-            const cardBtn = document.getElementById("tab-card-btn");
-
-            if (tabId === "upi") {
-                upiBtn.classList.add("active");
-                cardBtn.classList.remove("active");
-            } else {
-                cardBtn.classList.add("active");
-                upiBtn.classList.remove("active");
-            }
-        }
-
-        function copyUpiId() {
-            navigator.clipboard.writeText("iamaditya1202@oksbi");
-            const toast = document.getElementById("upiToast");
-            if (toast) {
-                toast.style.opacity = "1";
-                setTimeout(() => {
-                    toast.style.opacity = "0";
-                }, 2000);
-            }
-        }
-    </script>
 </body>
 </html>
