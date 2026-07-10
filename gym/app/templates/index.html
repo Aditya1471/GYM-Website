@@ -1,0 +1,1061 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'main' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Fit-Hit Gym</title>
+    <script src="https://kit.fontawesome.com/ccdbd762c2.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background: linear-gradient(rgba(10, 10, 12, 0.85), rgba(10, 10, 12, 0.9)), url({% static 'images/gym_bg_main.png' %});
+            font-family: 'Outfit', sans-serif;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            margin: 0;
+            color: #fff;
+        }
+
+        /* Slider Wrapper */
+        .sl {
+            position: relative;
+            max-width: 1100px;
+            margin: 40px auto;
+            overflow: hidden;
+            height: auto;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .slid {
+            min-width: 100%;
+            box-sizing: border-box;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Glassmorphic Caption on Video */
+        .slid h1 {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(15, 15, 15, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 16px;
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .slid a {
+            text-decoration: none;
+            width: 100%;
+            display: block;
+        }
+
+        .slid:hover h1 {
+            background-color: rgba(255, 94, 58, 0.85);
+            color: #fff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 69, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .slid video {
+            width: 100%;
+            display: block;
+            border-radius: 0;
+            object-fit: cover;
+            max-height: 520px;
+        }
+
+        /* Premium Nav Buttons */
+        button.prev, button.next {
+            position: absolute;
+            top: 50%;
+            width: 48px;
+            height: 48px;
+            background-color: rgba(15, 15, 15, 0.8);
+            backdrop-filter: blur(5px);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transform: translateY(-50%);
+            z-index: 10;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button.prev {
+            left: 20px;
+        }
+
+        button.next {
+            right: 20px;
+        }
+
+        button.prev:hover, button.next:hover {
+            background-color: #ff5e3a;
+            color: #fff;
+            border-color: #ff5e3a;
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.4);
+        }
+
+        /* Program Section */
+        .program-section {
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            margin: 0;
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .title-bar {
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #ff4500, #ff8c00);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .program-card {
+            display: flex;
+            background: rgba(20, 20, 22, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .program-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 94, 58, 0.3);
+            box-shadow: 0 10px 30px rgba(255, 69, 0, 0.15);
+        }
+
+        .program-card:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .card-image {
+            flex: 1;
+            min-width: 320px;
+            height: 280px;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .program-card:hover .card-image img {
+            transform: scale(1.06);
+        }
+
+        .card-content {
+            flex: 2;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card-content h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0 0 15px;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+
+        .program-card:hover .card-content h3 {
+            color: #ff5e3a;
+        }
+
+        .card-content p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #a1a1a6;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .sl {
+                margin: 20px 10px;
+                border-radius: 16px;
+            }
+            .slid h1 {
+                font-size: 1.4rem;
+                padding: 10px 20px;
+                bottom: 15px;
+                left: 15px;
+                border-radius: 12px;
+            }
+            .program-card, .program-card:nth-child(even) {
+                flex-direction: column;
+            }
+            .card-image {
+                min-width: 100%;
+                height: 200px;
+            }
+            .card-content {
+                padding: 25px;
+            }
+            button.prev, button.next {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Stats Counter Section */
+        .stats-section {
+            max-width: 1100px;
+            margin: 80px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: rgba(20, 20, 22, 0.55);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 30px 20px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 94, 58, 0.25);
+            box-shadow: 0 15px 35px rgba(255, 94, 58, 0.15);
+        }
+
+        .stat-card i {
+            font-size: 2.2rem;
+            color: #ff5e3a;
+            margin-bottom: 15px;
+        }
+
+        .stat-number {
+            font-size: 2.4rem;
+            font-weight: 800;
+            margin: 0 0 5px;
+            background: linear-gradient(135deg, #fff, #a1a1a6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #71717a;
+            font-weight: 700;
+        }
+
+        /* Pricing Section */
+        .pricing-section {
+            max-width: 1100px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .price-card {
+            background: rgba(20, 20, 22, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 40px 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .price-card.popular {
+            border-color: #ff5e3a;
+            box-shadow: 0 20px 45px rgba(255, 94, 58, 0.15);
+            background: rgba(25, 20, 20, 0.7);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            color: #fff;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 10px rgba(255, 69, 0, 0.4);
+        }
+
+        .price-name {
+            font-size: 1.4rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #fff;
+            margin: 0 0 15px;
+        }
+
+        .price-amount {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #ff5e3a;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+        }
+
+        .price-amount span {
+            font-size: 1rem;
+            color: #71717a;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
+        .price-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 40px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .price-features li {
+            font-size: 0.95rem;
+            color: #d1d1d6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .price-features li i {
+            color: #28a745;
+            font-size: 0.9rem;
+        }
+
+        .price-btn {
+            margin-top: auto;
+            display: block;
+            padding: 14px 20px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .price-card.popular .price-btn {
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            border: none;
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
+        }
+
+        .price-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 94, 58, 0.3);
+        }
+
+        .price-card.popular:hover {
+            border-color: #ff5e3a;
+            box-shadow: 0 20px 50px rgba(255, 94, 58, 0.25);
+        }
+
+        /* Occupancy Section Styles */
+        .occupancy-section {
+            max-width: 950px;
+            margin: 80px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .btn-location:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.45);
+        }
+
+        #nearbyGymSelect option {
+            background-color: #141416;
+            color: #fff;
+        }
+
+        .occupancy-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .occupancy-display-card {
+            background: rgba(20, 20, 22, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            gap: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .occupancy-display-card {
+                flex-direction: column;
+                padding: 30px 20px;
+                text-align: center;
+            }
+        }
+
+        .occupancy-gauge-box {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gauge-svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .gauge-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.05);
+            stroke-width: 8;
+        }
+
+        .gauge-fill {
+            fill: none;
+            stroke: #ff8c00;
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 314.16; /* Circumference = 2 * PI * r (r=50 -> 314.16) */
+            stroke-dashoffset: 314.16;
+            transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1), stroke 1s ease;
+        }
+
+        .gauge-text-overlay {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .occupancy-percentage {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.1;
+        }
+
+        .occupancy-status {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 3px;
+        }
+
+        .occupancy-details {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+        }
+
+        .occupancy-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 10px;
+            font-size: 0.95rem;
+            gap: 40px;
+        }
+
+        .occupancy-info-row span {
+            color: #a1a1a6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .occupancy-info-row strong {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .occupancy-tip {
+            font-size: 0.88rem;
+            color: #d1d1d6;
+            line-height: 1.5;
+            margin: 5px 0 0;
+            opacity: 0.95;
+        }
+
+        /* FAQ Accordion Styling */
+        .faq-section {
+            max-width: 850px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .faq-item {
+            background: rgba(20, 20, 22, 0.55);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: rgba(255, 94, 58, 0.2);
+            background: rgba(25, 25, 27, 0.65);
+        }
+
+        .faq-question {
+            padding: 22px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #fff;
+            user-select: none;
+            transition: color 0.3s ease;
+        }
+
+        .faq-question i {
+            color: #ff5e3a;
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-size: 1rem;
+        }
+
+        .faq-item.active .faq-question {
+            color: #ff5e3a;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background-color: rgba(0, 0, 0, 0.15);
+        }
+
+        .faq-answer p {
+            padding: 0 28px 22px;
+            margin: 0;
+            color: #a1a1a6;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Safety & Privacy Section */
+        .safety-section {
+            max-width: 1100px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .safety-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .safety-card {
+            background: rgba(20, 20, 22, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 40px;
+            display: flex;
+            gap: 25px;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+        }
+
+        .safety-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 94, 58, 0.3);
+            box-shadow: 0 15px 35px rgba(255, 94, 58, 0.15);
+        }
+
+        .safety-icon-wrapper {
+            background-color: rgba(255, 94, 58, 0.1);
+            border: 1px solid rgba(255, 94, 58, 0.2);
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .safety-icon-wrapper i {
+            font-size: 1.8rem;
+            color: #ff5e3a;
+        }
+
+        .safety-content h3 {
+            margin: 0 0 10px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .safety-content p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #a1a1a6;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .safety-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .safety-card {
+                padding: 30px;
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sl">
+        <div class="slides">
+            <div class="slid">
+                <a href="/photo">
+                    <video src="{% static 'images/vid1.mp4' %}" autoplay muted loop playsinline></video>
+                    <h1>Basic Fitness</h1>
+                </a>
+            </div>
+            <div class="slid">
+                <a href="/photo">
+                    <video src="{% static 'images/vid2.mp4' %}" autoplay muted loop playsinline></video>
+                    <h1>Muscle Training</h1>
+                </a>
+            </div>
+            <div class="slid">
+                <a href="/photo">
+                    <video src="{% static 'images/vid3.mp4' %}" autoplay muted loop playsinline></video>
+                    <h1>Yoga Training</h1>
+                </a>
+            </div>
+            <div class="slid">
+                <a href="/photo">
+                    <video src="{% static 'images/vid4.mp4' %}" autoplay muted loop playsinline></video>
+                    <h1>Body Building</h1>
+                </a>
+            </div>
+        </div>
+        <button class="prev">❮</button>
+        <button class="next">❯</button>
+    </div>
+
+    <script>
+        const slides = document.querySelector('.slides');
+        const slideCount = document.querySelectorAll('.slid').length;
+        let index = 0;
+
+        function updateSlidePosition() {
+            const offset = -index * 100;
+            slides.style.transform = `translateX(${offset}%)`;
+            manageVideoPlayback();
+        }
+
+        function moveToNextSlide() {
+            index = (index + 1) % slideCount;
+            updateSlidePosition();
+        }
+
+        function moveToPrevSlide() {
+            index = (index - 1 + slideCount) % slideCount;
+            updateSlidePosition();
+        }
+
+        function manageVideoPlayback() {
+            const slidesArray = document.querySelectorAll('.slid');
+            slidesArray.forEach((slide, i) => {
+                const video = slide.querySelector('video');
+                if (video) {
+                    if (i === index) {
+                        video.play();
+                    } else {
+                        video.pause();
+                        video.currentTime = 0;
+                    }
+                }
+            });
+        }
+
+        document.querySelector('.prev').addEventListener('click', moveToPrevSlide);
+        document.querySelector('.next').addEventListener('click', moveToNextSlide);
+        updateSlidePosition();
+    </script>
+
+    <div class="program-section">
+        <div class="section-title">
+            <h2>Our Programs</h2>
+            <div class="title-bar"></div>
+        </div>
+        <div class="cards-container">
+            <div class="program-card">
+                <div class="card-image">
+                    <img src="{% static 'images/program_fitness.png' %}" alt="Basic Fitness">
+                </div>
+                <div class="card-content">
+                    <h3>Basic Fitness</h3>
+                    <p>Being physically active can improve your brain health, help manage weight, reduce the risk of disease, strengthen bones and muscles. There are seven basic movements the human body can perform and all other exercises are merely variations of these: Pull, Push, Squat, Lunge, Hinge, Rotation, and Gait. Stimulating these major muscle groups builds a perfect structural foundation.</p>
+                </div>
+            </div>
+            
+            <div class="program-card">
+                <div class="card-image">
+                    <img src="{% static 'images/program_muscle.png' %}" alt="Muscle Training">
+                </div>
+                <div class="card-content">
+                    <h3>Muscle Training</h3>
+                    <p>Strength and resistance training are key components of physical well-being. By challenging your muscles under controlled resistance, you promote hypertrophy, metabolic health, and muscle density. Combined with targeted workouts and proper recovery, our muscle training program unlocks your full functional capacity.</p>
+                </div>
+            </div>
+
+            <div class="program-card">
+                <div class="card-image">
+                    <img src="{% static 'images/program_yoga.png' %}" alt="Yoga Training">
+                </div>
+                <div class="card-content">
+                    <h3>Yoga Training</h3>
+                    <p>Harmonize your mind, body, and breath. Yoga focuses on structural alignment, core stability, and deep mental focus. It reduces stress, builds lean flexibility, and improves overall somatic recovery, making it the perfect counterpart to heavy resistance training.</p>
+                </div>
+            </div>
+
+            <div class="program-card">
+                <div class="card-image">
+                    <img src="{% static 'images/program_bodybuilding.png' %}" alt="Body Building">
+                </div>
+                <div class="card-content">
+                    <h3>Body Building</h3>
+                    <p>Sculpt your ideal physique. Focus on aesthetic symmetry, progressive overload, and high intensity training. Our body building program is tailored for individuals seeking to maximize muscle volume, define contours, and build structural power through rigorous, goal-oriented training protocols.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gym Stats Counter Section -->
+    <div class="stats-section">
+        <div class="stat-card">
+            <i class="fa-solid fa-users"></i>
+            <div class="stat-number">15K+</div>
+            <div class="stat-label">Happy Members</div>
+        </div>
+        <div class="stat-card">
+            <i class="fa-solid fa-user-tie"></i>
+            <div class="stat-number">50+</div>
+            <div class="stat-label">Certified Coaches</div>
+        </div>
+        <div class="stat-card">
+            <i class="fa-solid fa-dumbbell"></i>
+            <div class="stat-number">25+</div>
+            <div class="stat-label">Workouts Programs</div>
+        </div>
+        <div class="stat-card">
+            <i class="fa-solid fa-location-dot"></i>
+            <div class="stat-number">10+</div>
+            <div class="stat-label">Gym Locations</div>
+        </div>
+    </div>
+
+    <!-- Pricing Section -->
+    <div class="pricing-section">
+        <div class="section-title">
+            <h2>Membership Pricing</h2>
+            <p>Affordable premium pricing plans for every fitness goal</p>
+            <div class="title-bar"></div>
+        </div>
+        
+        <div class="pricing-grid">
+            <!-- Starter Plan -->
+            <div class="price-card">
+                <div class="price-name">Elite Starter</div>
+                <div class="price-amount">₹999<span>/ month</span></div>
+                <ul class="price-features">
+                    <li><i class="fa-solid fa-circle-check"></i> Standard gym floor access</li>
+                    <li><i class="fa-solid fa-circle-check"></i> 1 Free physical assessment</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Modern locker room access</li>
+                    <li style="color: #71717a;"><i class="fa-solid fa-circle-xmark" style="color: #71717a;"></i> Group classes not included</li>
+                    <li style="color: #71717a;"><i class="fa-solid fa-circle-xmark" style="color: #71717a;"></i> Diet consultations</li>
+                </ul>
+                <a href="/signup" class="price-btn">Join Starter</a>
+            </div>
+
+            <!-- Pro Strength Plan -->
+            <div class="price-card popular">
+                <div class="popular-badge">Most Popular</div>
+                <div class="price-name">Pro Strength</div>
+                <div class="price-amount">₹1999<span>/ month</span></div>
+                <ul class="price-features">
+                    <li><i class="fa-solid fa-circle-check"></i> Full gym floor access</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Unlimited group cardio & yoga</li>
+                    <li><i class="fa-solid fa-circle-check"></i> 2 Personal trainer sessions/mo</li>
+                    <li><i class="fa-solid fa-circle-check"></i> 1 Monthly diet consultation</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Free premium locker & shower</li>
+                </ul>
+                <a href="/signup" class="price-btn">Get Pro Strength</a>
+            </div>
+
+            <!-- VIP Champion Plan -->
+            <div class="price-card">
+                <div class="price-name">VIP Champion</div>
+                <div class="price-amount">₹3499<span>/ month</span></div>
+                <ul class="price-features">
+                    <li><i class="fa-solid fa-circle-check"></i> 24/7 Floor & VIP lounge access</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Unlimited personal coaching</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Customized nutrition plan</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Free laundry & towel service</li>
+                    <li><i class="fa-solid fa-circle-check"></i> 10% Store product discounts</li>
+                </ul>
+                <a href="/signup" class="price-btn">Go VIP Champion</a>
+            </div>
+        </div>
+    </div>
+    <!-- Safety, Privacy & Dedicated Zones Section -->
+    <div class="safety-section">
+        <div class="section-title">
+            <h2>Safety, Privacy & Separation</h2>
+            <p>We guarantee a secure, comfortable, and harassment-free training space for everyone</p>
+            <div class="title-bar"></div>
+        </div>
+        
+        <div class="safety-grid">
+            <!-- Locker Rooms & Showers -->
+            <div class="safety-card">
+                <div class="safety-icon-wrapper">
+                    <i class="fa-solid fa-door-closed"></i>
+                </div>
+                <div class="safety-content">
+                    <h3>Segregated Lockers & Showers</h3>
+                    <p>Fully independent, pin-code secure locker rooms and high-end changing areas for men and women. Designed for absolute privacy, complete hygiene, and personal comfort.</p>
+                </div>
+            </div>
+
+            <!-- Dedicated Women-Only Gym Floor -->
+            <div class="safety-card">
+                <div class="safety-icon-wrapper">
+                    <i class="fa-solid fa-venus"></i>
+                </div>
+                <div class="safety-content">
+                    <h3>Dedicated Women-Only Zone</h3>
+                    <p>A separate, fully equipped training zone reserved exclusively for female members who prefer working out in a private setting, complete with cardio, free weights, and machines.</p>
+                </div>
+            </div>
+
+            <!-- Certified Expert Coaching Slots -->
+            <div class="safety-card">
+                <div class="safety-icon-wrapper">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <div class="safety-content">
+                    <h3>Certified Single-Gender Coaching</h3>
+                    <p>Access matching gender-certified coaches and custom training panels. We provide a highly professional team focused entirely on helping you achieve goals without pressure.</p>
+                </div>
+            </div>
+
+            <!-- Surveillance & Conduct Enforcers -->
+            <div class="safety-card">
+                <div class="safety-icon-wrapper">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div class="safety-content">
+                    <h3>Zero-Tolerance Code of Conduct</h3>
+                    <p>Our facility features 24/7 high-definition security camera coverage, panic alerts, and on-floor marshals who strictly enforce a respectful, harassment-free environment for all members.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FAQ Accordion Section -->
+    <div class="faq-section">
+        <div class="section-title">
+            <h2>Frequently Asked Questions</h2>
+            <p>Find answers to common questions about our gym memberships and facilities</p>
+            <div class="title-bar"></div>
+        </div>
+        
+        <div class="faq-list">
+            <!-- FAQ 1 -->
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>What are the gym opening hours?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>We are open 24/7 for VIP Champion members. General and Elite Starter members can access all equipment during standard hours, from 05:00 AM to 11:00 PM, Monday through Sunday.</p>
+                </div>
+            </div>
+
+            <!-- FAQ 2 -->
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Can I get a customized workout and diet plan?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, absolutely! Our Pro Strength and VIP Champion memberships include personalized workout routines and regular consultations with our certified nutritionists. Starter members can also book consultation sessions separately at the store.</p>
+                </div>
+            </div>
+
+            <!-- FAQ 3 -->
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Is locker and shower facilities available?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, we have secure digital lock changing rooms, high-end showers, and towel services available. Lockers are free to use during your workouts for all membership packages.</p>
+                </div>
+            </div>
+
+            <!-- FAQ 4 -->
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Do you offer refund or cancellation policies?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, we offer hassle-free monthly cancellations. You can cancel your membership at any time with a 7-day notice period before the next billing cycle. No hidden contracts or cancellation fees.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // FAQ Toggle logic
+        function toggleFaq(element) {
+            const item = element.parentElement;
+            const answer = item.querySelector('.faq-answer');
+            const isActive = item.classList.contains('active');
+            
+            // Close all FAQ items
+            document.querySelectorAll('.faq-item').forEach(i => {
+                i.classList.remove('active');
+                i.querySelector('.faq-answer').style.maxHeight = null;
+            });
+
+            if (!isActive) {
+                item.classList.add('active');
+                answer.style.maxHeight = answer.scrollHeight + "px";
+            }
+        }
+    </script>
+{% endblock %}
+</body>
+</html>

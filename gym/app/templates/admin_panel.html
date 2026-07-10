@@ -1,0 +1,723 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'main' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel Dashboard - Fit-Hit Gym</title>
+    <!-- Outfit Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ccdbd762c2.js" crossorigin="anonymous"></script>
+    <!-- Chart.js CDN for stunning dashboard charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background: linear-gradient(rgba(10, 10, 12, 0.94), rgba(10, 10, 12, 0.98)), radial-gradient(rgba(255, 94, 58, 0.06) 1.5px, transparent 0);
+            background-size: cover, 32px 32px;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            color: #fff;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 60px auto 100px;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 4px 15px rgba(255, 69, 0, 0.15));
+        }
+
+        /* Neon-border Stat Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 24px;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #ff4500, #ff8c00);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(255, 94, 58, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 45px rgba(255, 94, 58, 0.15);
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-number {
+            font-size: 2.4rem;
+            font-weight: 800;
+            margin: 5px 0 0;
+            color: #fff;
+            line-height: 1.1;
+        }
+
+        .stat-number.highlight {
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: #a1a1a6;
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            background: rgba(255, 94, 58, 0.08);
+            border: 1px solid rgba(255, 94, 58, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: #ff8c00;
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.15);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 25px rgba(255, 69, 0, 0.45);
+            background-color: rgba(255, 94, 58, 0.15);
+        }
+
+        /* Charts Row Section */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        @media (max-width: 991px) {
+            .charts-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Premium Glass Panels */
+        .glass-panel {
+            background: rgba(20, 20, 22, 0.65);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 28px;
+            padding: 35px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(255, 94, 58, 0.15);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 15px;
+        }
+
+        .panel-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .panel-badge {
+            background: linear-gradient(135deg, rgba(255, 69, 0, 0.12), rgba(255, 140, 0, 0.12));
+            border: 1px solid rgba(255, 94, 58, 0.25);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #ff8c00;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Two columns details grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Action Buttons bar */
+        .actions-bar {
+            background: rgba(20, 20, 22, 0.7);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 28px;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .actions-title {
+            margin: 0;
+            font-size: 1.15rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .actions-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .admin-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-sizing: border-box;
+        }
+
+        .admin-btn.primary {
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
+        }
+
+        .admin-btn.primary:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.45);
+        }
+
+        .admin-btn.secondary {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .admin-btn.secondary:hover {
+            background-color: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 94, 58, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 94, 58, 0.15);
+        }
+
+        /* List Items styling */
+        .admin-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .admin-list-item {
+            background-color: rgba(255, 255, 255, 0.015);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 18px;
+            padding: 18px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .admin-list-item:hover {
+            border-color: rgba(255, 94, 58, 0.25);
+            background-color: rgba(255, 255, 255, 0.03);
+            transform: translateX(4px);
+        }
+
+        .item-details h5 {
+            margin: 0 0 5px;
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .item-details p {
+            margin: 0;
+            color: #a1a1a6;
+            font-size: 0.82rem;
+            line-height: 1.4;
+        }
+
+        .item-meta {
+            text-align: right;
+        }
+
+        .item-date {
+            font-size: 0.78rem;
+            color: #ff8c00;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .user-badge-initial {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255,69,0,0.15), rgba(255,140,0,0.15));
+            border: 1px solid rgba(255,94,58,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #ff8c00;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            box-shadow: 0 0 10px rgba(255,69,0,0.15);
+        }
+
+        /* CLI Console Live Logger section */
+        .system-logs-section {
+            margin-top: 40px;
+            margin-bottom: 50px;
+        }
+
+        .console-box {
+            background-color: #08080a;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 24px;
+            font-family: 'Courier New', Courier, monospace;
+            max-height: 220px;
+            overflow-y: auto;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.9);
+            font-size: 0.85rem;
+        }
+
+        .console-box::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .console-box::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 3px;
+        }
+
+        .console-row {
+            margin-bottom: 8px;
+            line-height: 1.4;
+            display: flex;
+            gap: 12px;
+        }
+
+        .console-time {
+            color: #52525b;
+        }
+
+        .console-tag {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        .console-tag.info {
+            color: #3498db;
+        }
+
+        .console-text {
+            color: #d4d4d8;
+        }
+
+        /* Status Badge Pulse */
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #2ecc71;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px #2ecc71;
+            animation: pulse 1.8s infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(46, 204, 113, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <div>
+                <h1>Fit-Hit Admin Dashboard</h1>
+                <p style="margin: 6px 0 0; color: #a1a1a6; font-size: 0.98rem;">Real-time website traffic metrics, registration stats, and database operational health logs.</p>
+            </div>
+            <div class="actions-buttons">
+                <a href="/admin/" target="_blank" class="admin-btn primary"><i class="fa-solid fa-user-shield"></i> Master DB Backend</a>
+            </div>
+        </div>
+
+        <!-- Dashboard Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div>
+                    <span class="stat-label">Total Members</span>
+                    <h3 class="stat-number highlight">{{ total_users }}</h3>
+                </div>
+                <div class="stat-icon">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div>
+                    <span class="stat-label">Active Store Items</span>
+                    <h3 class="stat-number">{{ total_products }}</h3>
+                </div>
+                <div class="stat-icon">
+                    <i class="fa-solid fa-prescription-bottle-medical"></i>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div>
+                    <span class="stat-label">Shipping Leads</span>
+                    <h3 class="stat-number highlight">{{ total_customers }}</h3>
+                </div>
+                <div class="stat-icon">
+                    <i class="fa-solid fa-truck-fast"></i>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div>
+                    <span class="stat-label">Est. Revenue (MRR)</span>
+                    <h3 class="stat-number" style="color: #2ecc71;">₹{{ estimated_mrr }}</h3>
+                </div>
+                <div class="stat-icon" style="color: #2ecc71; border-color: rgba(46, 204, 113, 0.25); background: rgba(46, 204, 113, 0.08); box-shadow: 0 0 15px rgba(46, 204, 113, 0.15);">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Charts Row -->
+        <div class="charts-row">
+            <!-- Weekly Traffic Graph -->
+            <div class="glass-panel">
+                <div class="panel-header">
+                    <h4 class="panel-title"><i class="fa-solid fa-chart-line" style="color: #ff8c00;"></i> Member Registration Trend</h4>
+                    <span class="panel-badge">Live Analytics</span>
+                </div>
+                <div style="position: relative; height: 320px;">
+                    <canvas id="trafficTrendChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Program Interest distribution -->
+            <div class="glass-panel">
+                <div class="panel-header">
+                    <h4 class="panel-title"><i class="fa-solid fa-chart-pie" style="color: #ff8c00;"></i> Class Bookings Split</h4>
+                    <span class="panel-badge">Distribution</span>
+                </div>
+                <div style="position: relative; height: 320px; display: flex; align-items: center; justify-content: center;">
+                    <canvas id="classSplitChart" style="max-height: 290px; max-width: 290px;"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Lists Grid -->
+        <div class="dashboard-grid">
+            <!-- Recent Users -->
+            <div class="glass-panel">
+                <div class="panel-header">
+                    <h4 class="panel-title"><i class="fa-solid fa-user-plus" style="color: #ff8c00;"></i> Recently Joined Members</h4>
+                    <span class="panel-badge">Feed List</span>
+                </div>
+                
+                <div class="admin-list">
+                    {% for u in recent_users %}
+                        <div class="admin-list-item">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div class="user-badge-initial">
+                                    {{ u.username|slice:":1"|upper }}
+                                </div>
+                                <div class="item-details">
+                                    <h5>{{ u.username }}</h5>
+                                    <p>{{ u.email|default:"No email registered" }}</p>
+                                </div>
+                            </div>
+                            <div class="item-meta">
+                                <span class="item-date">{{ u.date_joined|date:"d M Y" }}</span>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p style="text-align: center; color: #a1a1a6; font-size: 0.95rem;">No users registered yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Recent Shipping Leads -->
+            <div class="glass-panel">
+                <div class="panel-header">
+                    <h4 class="panel-title"><i class="fa-solid fa-envelope-open-text" style="color: #ff8c00;"></i> Active Shipping Addresses</h4>
+                    <span class="panel-badge">Last 5 entries</span>
+                </div>
+                
+                <div class="admin-list">
+                    {% for c in recent_customers %}
+                        <div class="admin-list-item">
+                            <div class="item-details">
+                                <h5>{{ c.name }}</h5>
+                                <p>{{ c.locality }}, {{ c.city }} - {{ c.zipcode }}</p>
+                                <p style="font-size: 0.78rem; margin-top: 3px; color: #ff8c00;"><i class="fa-solid fa-phone"></i> {{ c.phone|default:"No Phone" }}</p>
+                            </div>
+                            <div class="item-meta">
+                                <span class="item-date">ID: #{{ c.id }}</span>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p style="text-align: center; color: #a1a1a6; font-size: 0.95rem;">No shipping addresses recorded yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- System CLI Event Console logs -->
+        <div class="glass-panel system-logs-section">
+            <div class="panel-header">
+                <h4 class="panel-title"><i class="fa-solid fa-terminal" style="color: #ff8c00;"></i> Live System Operations Logger</h4>
+                <span class="panel-badge" style="background-color: rgba(46, 204, 113, 0.08); border-color: rgba(46, 204, 113, 0.2); color: #2ecc71;"><span class="pulse-dot"></span>Active</span>
+            </div>
+            <div class="console-box" id="systemLogsConsole">
+                <div class="console-row">
+                    <span class="console-time">[22:45:01]</span>
+                    <span class="console-tag info">[INFO]</span>
+                    <span class="console-text">System initialization check complete. CPU load: 1.2%</span>
+                </div>
+                <div class="console-row">
+                    <span class="console-time">[22:45:02]</span>
+                    <span class="console-tag">[SUCCESS]</span>
+                    <span class="console-text">Django STATReloader service listening at port 8000.</span>
+                </div>
+                <div class="console-row">
+                    <span class="console-time">[22:45:03]</span>
+                    <span class="console-tag">[SUCCESS]</span>
+                    <span class="console-text">SQLite database read/write latency: 8ms. Healthy.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Operation Tools -->
+        <div class="actions-bar">
+            <h4 class="actions-title"><i class="fa-solid fa-gears" style="color: #ff8c00;"></i> Operations Shortcuts</h4>
+            <div class="actions-buttons">
+                <a href="{% url 'product' %}" class="admin-btn secondary"><i class="fa-solid fa-cubes"></i> View Store</a>
+                <a href="{% url 'customer_form' %}" class="admin-btn secondary"><i class="fa-solid fa-location-arrow"></i> Add Address</a>
+                <a href="/index" class="admin-btn secondary"><i class="fa-solid fa-house"></i> View Home</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics & Logger Controllers scripts -->
+    <script>
+        // Setup line charts for member registration trend
+        const ctxTrend = document.getElementById('trafficTrendChart').getContext('2d');
+        
+        // Define neon color gradients
+        const gradientOrange = ctxTrend.createLinearGradient(0, 0, 0, 300);
+        gradientOrange.addColorStop(0, 'rgba(255, 94, 58, 0.35)');
+        gradientOrange.addColorStop(1, 'rgba(255, 94, 58, 0.00)');
+
+        new Chart(ctxTrend, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                datasets: [{
+                    label: 'Registrations',
+                    data: [12, 19, 32, 28, 45, 60, {{ total_users }}],
+                    borderColor: '#ff5e3a',
+                    backgroundColor: gradientOrange,
+                    borderWidth: 4,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#ff8c00',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(255,255,255,0.03)' },
+                        ticks: { 
+                            color: '#a1a1a6',
+                            font: { family: 'Outfit', weight: 600 }
+                        }
+                    },
+                    y: {
+                        grid: { color: 'rgba(255,255,255,0.03)' },
+                        ticks: { 
+                            color: '#a1a1a6',
+                            font: { family: 'Outfit', weight: 600 }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Setup doughnut chart for class interest split
+        const ctxSplit = document.getElementById('classSplitChart').getContext('2d');
+        new Chart(ctxSplit, {
+            type: 'doughnut',
+            data: {
+                labels: ['Basic Fitness', 'Muscle Gain', 'Yoga Recovery', 'Body Building'],
+                datasets: [{
+                    data: [35, 45, 20, 30],
+                    backgroundColor: ['#ff4500', '#ff8c00', '#2ecc71', '#3498db'],
+                    borderWidth: 3,
+                    borderColor: '#141416'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#a1a1a6',
+                            font: { family: 'Outfit', size: 12, weight: 600 },
+                            boxWidth: 12,
+                            padding: 15
+                        }
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+
+        // Simulate terminal logging console logs dynamically to keep it "alive"
+        const logMsgs = [
+            { type: "SUCCESS", text: "Database cache check succeeded. 0 expired values purged." },
+            { type: "INFO", text: "SpeechSynthesis engine loaded 4 localized voice configurations." },
+            { type: "INFO", text: "Gym AI Assistant greeting balloon dispatched to dashboard visitor." },
+            { type: "SUCCESS", text: "Session logs serialized to localStorage. 0 active leaks detected." },
+            { type: "SUCCESS", text: "Occupancy gauge simulated metric recalculated. Crowd status: Healthy." },
+            { type: "INFO", text: "Referral links clipboard buffer initialized successfully." }
+        ];
+
+        const consoleBox = document.getElementById("systemLogsConsole");
+        setInterval(() => {
+            if (!consoleBox) return;
+            const now = new Date();
+            const timeString = "[" + now.toTimeString().split(' ')[0] + "]";
+            const roll = logMsgs[Math.floor(Math.random() * logMsgs.length)];
+
+            const row = document.createElement("div");
+            row.className = "console-row";
+            row.style.animation = "reviewEntrance 0.4s ease-out forwards";
+            row.style.opacity = "0";
+
+            row.innerHTML = `
+                <span class="console-time">${timeString}</span>
+                <span class="console-tag ${roll.type === 'INFO' ? 'info' : ''}">[${roll.type}]</span>
+                <span class="console-text">${roll.text}</span>
+            `;
+
+            consoleBox.appendChild(row);
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+
+            if (consoleBox.children.length > 15) {
+                consoleBox.removeChild(consoleBox.children[0]);
+            }
+        }, 6000);
+    </script>
+{% endblock %}
+</body>
+</html>

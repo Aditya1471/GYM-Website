@@ -1,0 +1,198 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proceed to Payment - Fit-Hit Gym</title>
+    <!-- Outfit Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ccdbd762c2.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background: linear-gradient(rgba(10, 10, 12, 0.88), rgba(10, 10, 12, 0.92)), url('{% static "images/gym_bg_main.png" %}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        main {
+            width: 100%;
+            max-width: 500px;
+            margin: 20px;
+            background: rgba(20, 20, 22, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin: 20px 0 25px;
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Tabs styling */
+        .payment-tab {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            color: #d1d1d6;
+            padding: 10px 20px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: inherit;
+        }
+        .payment-tab:hover {
+            background-color: rgba(255, 94, 58, 0.08);
+            border-color: rgba(255, 94, 58, 0.3);
+            color: #ff8c00;
+        }
+        .payment-tab.active {
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(255, 69, 0, 0.25);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 16px 32px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
+            box-sizing: border-box;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.45);
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: #a1a1a6;
+            font-size: 18px;
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .back-btn:hover {
+            color: #fff;
+            background-color: rgba(255, 94, 58, 0.2);
+            border-color: rgba(255, 94, 58, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <a href="/customer" class="back-btn"><i class="fa-solid fa-chevron-left"></i></a>
+        <h2>Select Payment Method</h2>
+        
+        <!-- Toggle tabs for payment methods -->
+        <div style="display: flex; gap: 10px; margin-bottom: 25px; justify-content: center;">
+            <button type="button" id="tab-upi-btn" class="payment-tab active" onclick="switchPaymentTab('upi')"><i class="fa-solid fa-mobile-screen"></i> UPI Transfer</button>
+            <button type="button" id="tab-card-btn" class="payment-tab" onclick="switchPaymentTab('card')"><i class="fa-regular fa-credit-card"></i> Card / Stripe</button>
+        </div>
+
+        <!-- UPI Tab Content -->
+        <div class="payment-content" id="content-upi">
+            <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 25px; margin-bottom: 25px; box-sizing: border-box;">
+                <p style="margin: 0 0 15px; font-size: 0.88rem; color: #ff8c00; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Direct Transfer via UPI ID</p>
+
+                <!-- UPI Details & Copy -->
+                <div style="background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 10px; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; box-sizing: border-box;">
+                    <span style="font-size: 0.78rem; color: #a1a1a6; font-family: monospace; word-break: break-all;">iamaditya1202@oksbi</span>
+                    <button type="button" onclick="copyUpiId()" style="background: linear-gradient(135deg, #ff4500, #ff8c00); border: none; border-radius: 8px; padding: 6px 12px; color: #fff; font-size: 0.72rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0;">Copy ID</button>
+                </div>
+                <span id="upiToast" style="display: block; font-size: 0.72rem; color: #2ecc71; margin-top: 8px; font-weight: 700; opacity: 0; transition: opacity 0.3s ease;"><i class="fa-solid fa-circle-check"></i> UPI ID copied!</span>
+            </div>
+
+            <!-- Complete payment button -->
+            <a href="/success" class="btn-primary" style="margin-top: 10px; text-decoration: none;"><i class="fa-solid fa-circle-check"></i> I have scanned & paid</a>
+        </div>
+
+        <!-- Card/Stripe Tab Content -->
+        <div class="payment-content" id="content-card" style="display: none;">
+            <p style="margin: 0 0 25px; font-size: 0.95rem; color: #a1a1a6; line-height: 1.5; text-align: center;">Pay securely via Stripe checkout gateway using credit card, debit card, or international cards.</p>
+            <form action="{% url 'create-checkout-session' %}" method="POST" style="margin: 0; padding: 0; border: none; background: none; box-shadow: none;">
+                {% csrf_token %}
+                <button type="submit" class="btn-primary" id="checkout-button"><i class="fa-solid fa-credit-card"></i> Pay with Card</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        function switchPaymentTab(tabId) {
+            document.getElementById("content-upi").style.display = tabId === "upi" ? "block" : "none";
+            document.getElementById("content-card").style.display = tabId === "card" ? "block" : "none";
+
+            const upiBtn = document.getElementById("tab-upi-btn");
+            const cardBtn = document.getElementById("tab-card-btn");
+
+            if (tabId === "upi") {
+                upiBtn.classList.add("active");
+                cardBtn.classList.remove("active");
+            } else {
+                cardBtn.classList.add("active");
+                upiBtn.classList.remove("active");
+            }
+        }
+
+        function copyUpiId() {
+            navigator.clipboard.writeText("iamaditya1202@oksbi");
+            const toast = document.getElementById("upiToast");
+            if (toast) {
+                toast.style.opacity = "1";
+                setTimeout(() => {
+                    toast.style.opacity = "0";
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>

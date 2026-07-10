@@ -1,0 +1,743 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'main' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Fit-Hit Gym</title>
+    <!-- Outfit Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ccdbd762c2.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background: linear-gradient(rgba(10, 10, 12, 0.88), rgba(10, 10, 12, 0.92)), url('{% static "images/gym_bg_main.png" %}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            color: #fff;
+        }
+
+        .profile-container {
+            max-width: 1100px;
+            margin: 50px auto 80px;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Glassmorphic Cards */
+        .glass-card {
+            background: rgba(20, 20, 22, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 94, 58, 0.2);
+        }
+
+        /* Left profile details card */
+        .user-summary {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .avatar-circle {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(255, 69, 0, 0.35);
+            border: 3px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-name {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin: 0 0 5px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .user-email {
+            font-size: 0.95rem;
+            color: #ff8c00;
+            margin: 0 0 25px;
+            font-weight: 500;
+        }
+
+        .user-stats {
+            width: 100%;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 25px;
+            text-align: left;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.92rem;
+        }
+
+        .stat-label {
+            color: #a1a1a6;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        /* Right panel cards */
+        .panel-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin: 0 0 25px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Address cards list */
+        .address-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .address-item {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .address-item:hover {
+            border-color: rgba(255, 94, 58, 0.25);
+            background-color: rgba(255, 255, 255, 0.04);
+        }
+
+        .address-info h4 {
+            margin: 0 0 8px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .address-info p {
+            margin: 0 0 6px;
+            color: #a1a1a6;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .address-info .phone-tag {
+            color: #ff8c00;
+            font-size: 0.88rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .no-address-box {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px dashed rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+        }
+
+        .no-address-box i {
+            font-size: 2.2rem;
+            color: #a1a1a6;
+            margin-bottom: 15px;
+        }
+
+        .no-address-box p {
+            margin: 0 0 20px;
+            color: #a1a1a6;
+            font-size: 0.95rem;
+        }
+
+        .btn-add-address {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-add-address:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.45);
+        }
+
+        /* Membership detail box */
+        .membership-banner {
+            margin-top: 30px;
+            background: linear-gradient(135deg, rgba(255, 69, 0, 0.12), rgba(255, 140, 0, 0.12));
+            border: 1px solid rgba(255, 94, 58, 0.25);
+            border-radius: 20px;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .member-details h4 {
+            margin: 0 0 5px;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .member-details p {
+            margin: 0;
+            color: #d1d1d6;
+            font-size: 0.9rem;
+        }
+
+        .member-badge {
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(255, 69, 0, 0.3);
+        }
+
+        /* Workout Planner Styles */
+        .workout-tab-btn {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            color: #d1d1d6;
+            padding: 8px 16px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+        .workout-tab-btn:hover {
+            background-color: rgba(255, 94, 58, 0.08);
+            border-color: rgba(255, 94, 58, 0.3);
+            color: #ff8c00;
+        }
+        .workout-tab-btn.active {
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(255, 69, 0, 0.25);
+        }
+        .workout-pane {
+            display: none;
+            background-color: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .workout-pane.active {
+            display: block;
+        }
+        .workout-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .workout-item-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            font-size: 0.88rem;
+            color: #d1d1d6;
+            user-select: none;
+            transition: color 0.2s ease;
+        }
+        .workout-item-label:hover {
+            color: #fff;
+        }
+        .workout-check {
+            width: 18px;
+            height: 18px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background-color: rgba(0,0,0,0.3);
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        .workout-check:checked {
+            background-color: #ff8c00;
+            border-color: transparent;
+        }
+        .workout-check:checked::after {
+            content: "\f00c";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: #fff;
+            font-size: 0.65rem;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-grid">
+            <!-- Left User card -->
+            <div class="glass-card user-summary">
+                <div class="avatar-circle">
+                    {{ request.user.username|slice:":1"|upper }}
+                </div>
+                <h3 class="user-name">{{ request.user.username }}</h3>
+                <span class="user-email">{{ request.user.email|default:"No email registered" }}</span>
+                
+                <div class="user-stats">
+                    <div class="stat-row">
+                        <span class="stat-label">Username:</span>
+                        <span class="stat-value">@{{ request.user.username }}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Joined On:</span>
+                        <span class="stat-value">{{ request.user.date_joined|date:"d M Y" }}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Status:</span>
+                        <span class="stat-value" style="color: #4cd964;"><i class="fa-solid fa-circle-check"></i> Active Member</span>
+                    </div>
+                </div>
+
+                <!-- Referral Banner Card -->
+                <div style="margin-top: 25px; width: 100%; text-align: left; background: rgba(255, 69, 0, 0.05); border: 1px dashed rgba(255, 94, 58, 0.25); border-radius: 16px; padding: 18px; box-sizing: border-box;">
+                    <h5 style="margin: 0 0 5px; color: #ff8c00; font-size: 0.95rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;"><i class="fa-solid fa-gift"></i> Share & Earn</h5>
+                    <p style="margin: 0 0 12px; font-size: 0.78rem; color: #d1d1d6; line-height: 1.4;">Invite your friends to register and get <strong>1 month free</strong> VIP membership!</p>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="referralLinkInput" value="http://127.0.0.1:8000/signup?ref={{ request.user.username }}" readonly 
+                               style="flex-grow: 1; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 6px 10px; color: #a1a1a6; font-size: 0.72rem; outline: none; width: 10px;">
+                        <button type="button" onclick="copyReferralLink()" 
+                                style="background: linear-gradient(135deg, #ff4500, #ff8c00); border: none; border-radius: 8px; padding: 6px 12px; color: #fff; font-size: 0.72rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0;">
+                            Copy
+                        </button>
+                    </div>
+                    <span id="copyToast" style="display: block; font-size: 0.7rem; color: #2ecc71; margin-top: 5px; font-weight: 700; opacity: 0; transition: opacity 0.3s ease;">
+                        <i class="fa-solid fa-circle-check"></i> Invite link copied!
+                    </span>
+                </div>
+            </div>
+
+            <!-- Right details card -->
+            <div class="glass-card">
+                <h3 class="panel-title"><i class="fa-solid fa-map-location-dot"></i> Saved Delivery Addresses</h3>
+                
+                {% if addresses %}
+                    <div class="address-list">
+                        {% for addr in addresses %}
+                            <div class="address-item">
+                                <div class="address-info">
+                                    <h4>{{ addr.name }}</h4>
+                                    <p>{{ addr.locality }}</p>
+                                    <p>{{ addr.city }} - {{ addr.zipcode }}, {{ addr.state }}</p>
+                                    {% if addr.phone %}
+                                        <div class="phone-tag"><i class="fa-solid fa-phone"></i> {{ addr.phone }}</div>
+                                    {% endif %}
+                                </div>
+                                <div style="display: flex; gap: 10px;">
+                                    <span style="font-size: 0.8rem; color: #a1a1a6; background-color: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 12px; font-weight: 700; border: 1px solid rgba(255,255,255,0.08);">SHIPPING</span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div style="margin-top: 25px; text-align: right;">
+                        <a href="{% url 'customer_form' %}" class="btn-add-address"><i class="fa-solid fa-plus"></i> Add New Address</a>
+                    </div>
+                {% else %}
+                    <div class="no-address-box">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <p>You have not saved any shipping addresses yet.</p>
+                        <a href="{% url 'customer_form' %}" class="btn-add-address"><i class="fa-solid fa-plus"></i> Save Delivery Address</a>
+                    </div>
+                {% endif %}
+
+                <!-- Workout Planner Widget -->
+                <div style="margin-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 30px; margin-bottom: 25px;">
+                    <h3 class="panel-title" style="margin-bottom: 20px;"><i class="fa-solid fa-calendar-check"></i> Daily Workout Planner</h3>
+                    
+                    <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <button type="button" class="workout-tab-btn" id="tab-mon" onclick="switchWorkoutPlan('mon')">Mon: Chest</button>
+                        <button type="button" class="workout-tab-btn" id="tab-tue" onclick="switchWorkoutPlan('tue')">Tue: Back</button>
+                        <button type="button" class="workout-tab-btn" id="tab-wed" onclick="switchWorkoutPlan('wed')">Wed: Arms</button>
+                        <button type="button" class="workout-tab-btn" id="tab-thu" onclick="switchWorkoutPlan('thu')">Thu: Shoulders</button>
+                        <button type="button" class="workout-tab-btn" id="tab-fri" onclick="switchWorkoutPlan('fri')">Fri: Legs</button>
+                        <button type="button" class="workout-tab-btn" id="tab-sat" onclick="switchWorkoutPlan('sat')">Sat: Cardio</button>
+                        <button type="button" class="workout-tab-btn" id="tab-sun" onclick="switchWorkoutPlan('sun')">Sun: Rest</button>
+                    </div>
+
+                    <!-- Monday Pane -->
+                    <div class="workout-pane" id="pane-workout-mon">
+                        <h4 style="margin: 0 0 12px; font-size: 0.95rem; color: #ff8c00; font-weight: 800; text-transform: uppercase;">Chest & Triceps Routine</h4>
+                        <div class="workout-list">
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('mon')" class="workout-check">
+                                <span>Flat Barbell Bench Press (4 sets x 8 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('mon')" class="workout-check">
+                                <span>Incline Dumbbell Press (3 sets x 10 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('mon')" class="workout-check">
+                                <span>Cable Chest Flyes (Low-to-High) (3 sets x 12 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('mon')" class="workout-check">
+                                <span>Overhead Tricep Extensions (3 sets x 12 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('mon')" class="workout-check">
+                                <span>Tricep Rope Pushdowns (3 sets x 15 reps)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Tuesday Pane -->
+                    <div class="workout-pane" id="pane-workout-tue">
+                        <h4 style="margin: 0 0 12px; font-size: 0.95rem; color: #ff8c00; font-weight: 800; text-transform: uppercase;">Back & Biceps Routine</h4>
+                        <div class="workout-list">
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('tue')" class="workout-check">
+                                <span>Conventional Barbell Deadlifts (4 sets x 5 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('tue')" class="workout-check">
+                                <span>Wide-Grip Lat Pulldowns (4 sets x 10 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('tue')" class="workout-check">
+                                <span>Single-Arm Dumbbell Rows (3 sets x 10 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('tue')" class="workout-check">
+                                <span>Barbell Preacher Bicep Curls (3 sets x 12 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('tue')" class="workout-check">
+                                <span>Alternate Hammer Curls (3 sets x 12 reps)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Wednesday Pane -->
+                    <div class="workout-pane" id="pane-workout-wed">
+                        <h4 style="margin: 0 0 12px; font-size: 0.95rem; color: #ff8c00; font-weight: 800; text-transform: uppercase;">Arms & Forearms Routine</h4>
+                        <div class="workout-list">
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('wed')" class="workout-check">
+                                <span>Incline Dumbbell Bicep Curls (3 sets x 12 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('wed')" class="workout-check">
+                                <span>Close-Grip Barbell Bench Press (3 sets x 8 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('wed')" class="workout-check">
+                                <span>Cable EZ-Bar Bicep Curls (3 sets x 15 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('wed')" class="workout-check">
+                                <span>Skull Crushers (Triceps Press) (3 sets x 12 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('wed')" class="workout-check">
+                                <span>Reverse Grip Barbell Wrist Curls (3 sets x 15 reps)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Thursday Pane -->
+                    <div class="workout-pane" id="pane-workout-thu">
+                        <h4 style="margin: 0 0 12px; font-size: 0.95rem; color: #ff8c00; font-weight: 800; text-transform: uppercase;">Shoulders & Abs Routine</h4>
+                        <div class="workout-list">
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('thu')" class="workout-check">
+                                <span>Standing Barbell Overhead Press (4 sets x 6 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('thu')" class="workout-check">
+                                <span>Dumbbell Lateral Raises (4 sets x 15 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('thu')" class="workout-check">
+                                <span>Bent-Over Rear Delt Flyes (3 sets x 15 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('thu')" class="workout-check">
+                                <span>Hanging Knee Raises (3 sets x 15 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('thu')" class="workout-check">
+                                <span>Ab Wheel Rollouts (3 sets x 12 reps)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Friday Pane -->
+                    <div class="workout-pane" id="pane-workout-fri">
+                        <h4 style="margin: 0 0 12px; font-size: 0.95rem; color: #ff8c00; font-weight: 800; text-transform: uppercase;">Legs & Calves Routine</h4>
+                        <div class="workout-list">
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('fri')" class="workout-check">
+                                <span>Barbell Back Squats (4 sets x 8 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('fri')" class="workout-check">
+                                <span>Romanian Deadlifts (Hamstrings) (4 sets x 10 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('fri')" class="workout-check">
+                                <span>Leg Extensions (Quads) (3 sets x 12 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('fri')" class="workout-check">
+                                <span>Seated Leg Curls (Hamstrings) (3 sets x 12 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('fri')" class="workout-check">
+                                <span>Standing Calf Raises (4 sets x 20 reps)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Saturday Pane -->
+                    <div class="workout-pane" id="pane-workout-sat">
+                        <h4 style="margin: 0 0 12px; font-size: 0.95rem; color: #ff8c00; font-weight: 800; text-transform: uppercase;">Cardio & Core Conditioning</h4>
+                        <div class="workout-list">
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('sat')" class="workout-check">
+                                <span>Treadmill HIIT Interval Sprints (20 mins)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('sat')" class="workout-check">
+                                <span>Kettlebell Swings (4 sets x 20 reps)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('sat')" class="workout-check">
+                                <span>Battle Rope Slams (4 sets x 30 seconds)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('sat')" class="workout-check">
+                                <span>Plank holds (3 sets x 60 seconds)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('sat')" class="workout-check">
+                                <span>Bicycle Crunches (3 sets x 20 reps)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Sunday Pane -->
+                    <div class="workout-pane" id="pane-workout-sun">
+                        <h4 style="margin: 0 0 12px; font-size: 0.95rem; color: #ff8c00; font-weight: 800; text-transform: uppercase;">Rest & Active Recovery</h4>
+                        <div class="workout-list">
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('sun')" class="workout-check">
+                                <span>Foam Rolling (Glutes, Lats, IT Bands) (15 mins)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('sun')" class="workout-check">
+                                <span>Deep Hamstring & Hip Flexor Stretches (10 mins)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('sun')" class="workout-check">
+                                <span>Child's Pose & Cobra Stretches (5 mins)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('sun')" class="workout-check">
+                                <span>Steady-State Walking (LISS) (20 mins)</span>
+                            </label>
+                            <label class="workout-item-label">
+                                <input type="checkbox" onchange="updateWorkoutProgress('sun')" class="workout-check">
+                                <span>Hydration Check (Drink 3.5 Liters of water)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Workout progress bar -->
+                    <div style="margin-top: 20px; background-color: rgba(255,255,255,0.04); border-radius: 10px; height: 20px; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.06);">
+                        <div id="workoutProgressBar" style="width: 0%; background: linear-gradient(135deg, #ff4500, #ff8c00); height: 100%; transition: width 0.4s ease; box-shadow: 0 0 10px rgba(255, 69, 0, 0.5);"></div>
+                        <span id="workoutProgressText" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.72rem; font-weight: 800; color: #fff;">0% COMPLETED</span>
+                    </div>
+                </div>
+
+                <!-- Membership Plan card -->
+                <div class="membership-banner">
+                    <div class="member-details">
+                        <h4>Fit-Hit VIP Club Access</h4>
+                        <p>Enjoy premium access to co-ed and private women zones with certified personal coaching.</p>
+                    </div>
+                    <span class="member-badge">VIP CHAMPION</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function copyReferralLink() {
+            const input = document.getElementById("referralLinkInput");
+            if (!input) return;
+            input.select();
+            input.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(input.value);
+            
+            const toast = document.getElementById("copyToast");
+            if (toast) {
+                toast.style.opacity = "1";
+                setTimeout(() => {
+                    toast.style.opacity = "0";
+                }, 2000);
+            }
+        }
+
+        function switchWorkoutPlan(planId) {
+            // Hide all panes
+            const panes = document.querySelectorAll(".workout-pane");
+            panes.forEach(p => p.classList.remove("active"));
+            
+            // Show target pane
+            const activePane = document.getElementById("pane-workout-" + planId);
+            if (activePane) activePane.classList.add("active");
+
+            // Deactivate all tab buttons
+            const buttons = document.querySelectorAll(".workout-tab-btn");
+            buttons.forEach(b => b.classList.remove("active"));
+            
+            // Find the clicked tab button and activate it
+            const activeTabBtn = document.getElementById("tab-" + planId);
+            if (activeTabBtn) {
+                activeTabBtn.classList.add("active");
+            } else if (typeof event !== 'undefined' && event.currentTarget) {
+                event.currentTarget.classList.add("active");
+            }
+
+            // Update the progress bar for the newly selected plan
+            updateWorkoutProgress(planId);
+        }
+
+        function updateWorkoutProgress(planId) {
+            const pane = document.getElementById("pane-workout-" + planId);
+            if (!pane) return;
+            
+            const checkboxes = pane.querySelectorAll(".workout-check");
+            const total = checkboxes.length;
+            let checkedCount = 0;
+            checkboxes.forEach((cb, index) => {
+                if (cb.checked) checkedCount++;
+                // Save specific checked state to localStorage
+                localStorage.setItem(`fit_hit_workout_${planId}_${index}`, cb.checked ? "true" : "false");
+            });
+
+            const percent = total > 0 ? Math.round((checkedCount / total) * 100) : 0;
+            
+            const progress = document.getElementById("workoutProgressBar");
+            const text = document.getElementById("workoutProgressText");
+            if (progress) progress.style.width = percent + "%";
+            if (text) text.innerText = percent + "% COMPLETED";
+        }
+
+        // Restore saved checked checkboxes on load
+        document.addEventListener("DOMContentLoaded", function() {
+            const plans = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+            
+            // Get day index: Sunday is 0, Monday is 1, Tuesday is 2, ..., Saturday is 6
+            const dayIndex = new Date().getDay();
+            const daysMap = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+            const currentDayId = daysMap[dayIndex];
+
+            plans.forEach(planId => {
+                const pane = document.getElementById("pane-workout-" + planId);
+                if (pane) {
+                    const checkboxes = pane.querySelectorAll(".workout-check");
+                    checkboxes.forEach((cb, index) => {
+                        const saved = localStorage.getItem(`fit_hit_workout_${planId}_${index}`);
+                        if (saved === "true") {
+                            cb.checked = true;
+                        }
+                    });
+                }
+            });
+
+            // Set current day tab and pane active
+            switchWorkoutPlan(currentDayId);
+        });
+    </script>
+{% endblock %}
+</body>
+</html>

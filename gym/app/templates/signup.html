@@ -1,0 +1,306 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Fit-Hit Gym</title>
+    <!-- Outfit Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ccdbd762c2.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-y: auto;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        /* Animated Parallax Background */
+        .bg-zoom-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-zoom-image {
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(10, 10, 12, 0.55), rgba(10, 10, 12, 0.65)), url('{% static "images/register_bg.png" %}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            animation: kenburns 25s ease-in-out infinite;
+        }
+
+        @keyframes kenburns {
+            0%, 100% { transform: scale(1.02) translate(0px, 0px); }
+            50% { transform: scale(1.08) translate(10px, 5px); }
+        }
+        
+        .form {
+            background: rgba(18, 18, 20, 0.65);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 440px;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-sizing: border-box;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            z-index: 2;
+            margin: auto 0;
+        }
+
+        .form:hover {
+            border-color: rgba(255, 94, 58, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        .title {
+            font-size: 2rem;
+            font-weight: 800;
+            text-align: center;
+            margin: 0 0 5px;
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            justify-content: center;
+        }
+
+        .message {
+            font-size: 0.95rem;
+            color: #a1a1a6;
+            text-align: center;
+            margin: 0 0 10px;
+        }
+        
+        .flex {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .form label {
+            width: 100%;
+            display: block;
+        }
+        
+        .form label .input {
+            background-color: rgba(255, 255, 255, 0.03);
+            outline: none;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #fff;
+            padding: 14px 18px;
+            font-size: 0.95rem;
+            width: 100%;
+            border-radius: 12px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+        
+        .form label .input:focus {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: #ff5e3a;
+            box-shadow: 0 0 15px rgba(255, 94, 58, 0.2);
+        }
+
+        .form label span {
+            display: block;
+            font-size: 0.85rem;
+            color: #a1a1a6;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        
+        .submit {
+            display: block;
+            padding: 15px;
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 700;
+            width: 100%;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
+            margin-top: 10px;
+        }
+        
+        .submit:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.45);
+        }
+
+        .submit:active {
+            transform: translateY(0);
+        }
+        
+        .signin {
+            color: #a1a1a6;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .signin a {
+            color: #ff5e3a;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .signin a:hover {
+            color: #ff8c00;
+            text-decoration: underline;
+        }
+
+        /* Back to site styling */
+        .back-home {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            text-decoration: none;
+            color: #a1a1a6;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s ease;
+            background: rgba(18, 18, 20, 0.6);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .back-home:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-zoom-wrapper">
+        <div class="bg-zoom-image"></div>
+    </div>
+
+    <a href="/index" class="back-home"><i class="fas fa-arrow-left"></i> Back to Home</a>
+
+    <form class="form" action="" method="post">{% csrf_token %}
+        <div>
+            <p class="title">Register</p>
+            <p class="message">Create an account to get full access to our app.</p>
+        </div>
+
+        <!-- Django messages framework alerts -->
+        {% if messages %}
+            <div style="margin-bottom: 20px; width: 100%;">
+                {% for message in messages %}
+                    <div style="background-color: {% if message.tags == 'success' %}rgba(76, 217, 100, 0.12){% else %}rgba(255, 90, 90, 0.12){% endif %}; border: 1px solid {% if message.tags == 'success' %}rgba(76, 217, 100, 0.25){% else %}rgba(255, 90, 90, 0.25){% endif %}; color: {% if message.tags == 'success' %}#4cd964{% else %}#ff5a5a{% endif %}; padding: 12px 16px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                        <i class="fas {% if message.tags == 'success' %}fa-circle-check{% else %}fa-triangle-exclamation{% endif %}"></i>
+                        <span>{{ message }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Form non-field validation errors -->
+        {% if fm.non_field_errors %}
+            <div style="background-color: rgba(255, 90, 90, 0.1); border: 1px solid rgba(255, 90, 90, 0.3); padding: 12px; border-radius: 12px; margin-bottom: 20px; color: #ff5a5a; font-size: 0.9rem;">
+                {% for error in fm.non_field_errors %}
+                    <p style="margin: 0 0 5px; font-weight: 600;"><i class="fas fa-circle-exclamation"></i> {{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Render the form from view dynamically to maintain compatibility with Django forms backend -->
+        {% if fm %}
+            {% for field in fm %}
+                <label style="margin-bottom: 15px; display: block;">
+                    <span style="font-weight: 600; color: #d1d1d6; display: block; margin-bottom: 6px; font-size: 0.88rem; text-transform: uppercase;">{{ field.label }}</span>
+                    <!-- Output input tag manually styled or use custom widget styling -->
+                    <input type="{% if 'password' in field.name %}password{% else %}text{% endif %}" 
+                           id="{{ field.id_for_label }}" 
+                           name="{{ field.html_name }}" 
+                           class="input" 
+                           placeholder="Enter {{ field.label }}" 
+                           value="{% if 'password' not in field.name %}{{ field.value|default:'' }}{% endif %}"
+                           {% if field.field.required %}required{% endif %}
+                           style="margin-bottom: 5px;">
+                    {% if field.help_text %}
+                        <span style="color: #a1a1a6; font-size: 0.72rem; margin-top: 4px; display: block; opacity: 0.85; line-height: 1.4;">
+                            {% if field.name == 'username' %}
+                                Letters, digits and @/./+/-/_ only.
+                            {% elif 'password' in field.name %}
+                                Must be at least 8 characters.
+                            {% else %}
+                                {{ field.help_text|safe }}
+                            {% endif %}
+                        </span>
+                    {% endif %}
+                    {% if field.errors %}
+                        <span style="color: #ff5a5a; font-size: 0.8rem; margin-top: 4px; display: block; font-weight: 600;">{{ field.errors.0 }}</span>
+                    {% endif %}
+                </label>
+            {% endfor %}
+        {% else %}
+            <!-- Fallback static structure -->
+            <div class="flex">
+                <label>
+                    <span>Firstname</span>
+                    <input placeholder="First name" type="text" class="input" required>
+                </label>
+                <label>
+                    <span>Lastname</span>
+                    <input placeholder="Last name" type="text" class="input" required>
+                </label>
+            </div>  
+            <label>
+                <span>Username</span>
+                <input type="text" id="uname" name="uname" placeholder="Username" class="input" required>
+            </label> 
+            <label>
+                <span>Password</span>
+                <input type="password" id="psw" name="psw" placeholder="Password" class="input" required>
+            </label>
+            <label>
+                <span>Confirm password</span>
+                <input type="password" id="repsw" name="repsw" placeholder="Confirm password" class="input" required>
+            </label>
+        {% endif %}
+
+        <button class="submit" type="submit">Submit</button>
+        <p class="signin">Already have an account? <a href="/">Login</a></p>
+    </form>
+</body>
+</html>

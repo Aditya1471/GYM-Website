@@ -1,0 +1,624 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'main' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machines Portfolio - Fit-Hit Gym</title>
+    <script src="https://kit.fontawesome.com/ccdbd762c2.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background: linear-gradient(rgba(10, 10, 12, 0.88), rgba(10, 10, 12, 0.92)), url('{% static "images/gym_bg_main.png" %}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            color: #fff;
+        }
+
+        .header-section {
+            text-align: center;
+            padding: 50px 20px 20px;
+        }
+
+        .header-section h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 0 10px;
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-section p {
+            color: #a1a1a6;
+            font-size: 1.05rem;
+            margin: 0;
+        }
+
+        /* Machine Category Tabs */
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 30px auto 45px;
+            max-width: 1000px;
+            padding: 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 12px 22px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 30px;
+            color: #d1d1d6;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .tab-btn:hover {
+            color: #fff;
+            border-color: rgba(255, 94, 58, 0.4);
+            background-color: rgba(255, 94, 58, 0.05);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(255, 69, 0, 0.35);
+            transform: translateY(-2px);
+        }
+
+        /* Machine Grid */
+        .machines-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+        }
+
+        .machine-card {
+            background: rgba(20, 20, 22, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            overflow: hidden;
+            text-align: left;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .machine-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255, 94, 58, 0.3);
+            box-shadow: 0 15px 35px rgba(255, 69, 0, 0.15);
+        }
+
+        .machine-image-wrapper {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            background-color: #161618;
+            position: relative;
+        }
+
+        .machine-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .machine-card:hover .machine-image-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .machine-card-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .machine-meta {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .brand-badge {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #a1a1a6;
+            text-transform: uppercase;
+        }
+
+        .muscle-badge {
+            background-color: rgba(255, 94, 58, 0.08);
+            border: 1px solid rgba(255, 94, 58, 0.2);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #ff8c00;
+            text-transform: uppercase;
+        }
+
+        .machine-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin: 0 0 10px;
+            color: #fff;
+        }
+
+        .machine-desc {
+            font-size: 0.9rem;
+            color: #a1a1a6;
+            line-height: 1.5;
+            margin: 0 0 20px;
+        }
+
+        .action-btn {
+            background-color: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #fff;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.82rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.25);
+        }
+
+        /* Form Motion Details Modal overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 12, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .guide-card {
+            background: rgba(20, 20, 22, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 480px;
+            padding: 40px;
+            box-sizing: border-box;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-align: center;
+        }
+
+        .modal-overlay.active .guide-card {
+            transform: translateY(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 32px;
+            height: 32px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            color: #a1a1a6;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #fff;
+            background-color: rgba(220, 53, 69, 0.2);
+            border-color: rgba(220, 53, 69, 0.3);
+        }
+
+        .guide-card h3 {
+            margin: 15px 0 10px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #fff;
+        }
+
+        .guide-badge-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .guide-brand-label {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #a1a1a6;
+            text-transform: uppercase;
+        }
+
+        .guide-muscle-label {
+            background-color: rgba(255, 94, 58, 0.08);
+            border: 1px solid rgba(255, 94, 58, 0.2);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #ff8c00;
+            text-transform: uppercase;
+        }
+
+        .guide-body {
+            text-align: left;
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .guide-body h4 {
+            margin: 0 0 8px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #ff8c00;
+        }
+
+        .guide-body p {
+            margin: 0 0 15px;
+            color: #d1d1d6;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .guide-body p:last-child {
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .tab-btn {
+                padding: 10px 18px;
+                font-size: 0.75rem;
+            }
+            .machines-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-section">
+        <h1>World-Class Equipment</h1>
+        <p>Explore our premium, bio-mechanically optimized training arsenal</p>
+    </div>
+
+    <!-- Category selector tabs -->
+    <div class="tabs-container">
+        <button class="tab-btn active" id="tab-all" onclick="filterCategory('all')">All Equipment</button>
+        <button class="tab-btn" id="tab-strength" onclick="filterCategory('strength')">Plate Loaded & Strength</button>
+        <button class="tab-btn" id="tab-cardio" onclick="filterCategory('cardio')">Conditioning & Cardio</button>
+        <button class="tab-btn" id="tab-freeweight" onclick="filterCategory('freeweight')">Free Weights & Rigs</button>
+    </div>
+
+    <div class="machines-grid">
+        <!-- MACHINE 1 -->
+        <div class="machine-card" data-category="strength">
+            <div class="machine-image-wrapper">
+                <img src="{% static 'images/mac_chest_press.png' %}" alt="ISO-Lateral Chest Press">
+            </div>
+            <div class="machine-card-content">
+                <div>
+                    <div class="machine-meta">
+                        <span class="brand-badge">Hammer Strength</span>
+                        <span class="muscle-badge">Chest & Lats</span>
+                    </div>
+                    <h3 class="machine-title">ISO-Lateral Chest Press</h3>
+                    <p class="machine-desc">Plate-loaded chest press replicating natural convergence paths. Maximizes pectoral load while protecting joints.</p>
+                </div>
+                <button class="action-btn" onclick="openGuide('ISO-Lateral Chest Press', 'Hammer Strength', 'Chest / Pectorals', 'Adjust seat so handles align with mid-chest. Grip handles firmly, sit back, press outward in converging paths without locking elbows. Return slowly to start positions.', 'Keep shoulder blades retracted and pressed flat against seat pad throughout lift.')">
+                    <i class="fa-solid fa-circle-info"></i> Workout Motion Guide
+                </button>
+            </div>
+        </div>
+
+        <!-- MACHINE 2 -->
+        <div class="machine-card" data-category="strength">
+            <div class="machine-image-wrapper">
+                <img src="{% static 'images/mac_leg_press.png' %}" alt="Linear Leg Press">
+            </div>
+            <div class="machine-card-content">
+                <div>
+                    <div class="machine-meta">
+                        <span class="brand-badge">Life Fitness</span>
+                        <span class="muscle-badge">Quadriceps & Glutes</span>
+                    </div>
+                    <h3 class="machine-title">Linear Leg Press</h3>
+                    <p class="machine-desc">Premium linear sled operating at a 45-degree angle. High-end support mechanism for lower back protection.</p>
+                </div>
+                <button class="action-btn" onclick="openGuide('Linear Leg Press', 'Life Fitness', 'Quadriceps, Glutes & Hamstrings', 'Place feet shoulder-width apart on platform. Unlock safety grips. Slowly lower sled until knees form 90 degrees. Press platform back upward through heels.', 'Never fully lock out knees at top. Keep lower back firmly pressed against seat pad.')">
+                    <i class="fa-solid fa-circle-info"></i> Workout Motion Guide
+                </button>
+            </div>
+        </div>
+
+        <!-- MACHINE 3 -->
+        <div class="machine-card" data-category="cardio">
+            <div class="machine-image-wrapper">
+                <img src="{% static 'images/mac_treadmill.png' %}" alt="Elevation Series Treadmill">
+            </div>
+            <div class="machine-card-content">
+                <div>
+                    <div class="machine-meta">
+                        <span class="brand-badge">Life Fitness</span>
+                        <span class="muscle-badge">Cardiovascular Stamina</span>
+                    </div>
+                    <h3 class="machine-title">Elevation Series Treadmill</h3>
+                    <p class="machine-desc">Commercial grade shock-absorber treadmill with digital console trackers and dynamic slope settings.</p>
+                </div>
+                <button class="action-btn" onclick="openGuide('Elevation Series Treadmill', 'Life Fitness', 'Stamina, Legs & Heart Health', 'Clip safety tether to shirt. Set desired speed and incline using control panels. Walk, jog, or sprint using shock-absorbing deck.', 'Maintain upright spine posture. Adjust speed progressively in sprints.')">
+                    <i class="fa-solid fa-circle-info"></i> Workout Motion Guide
+                </button>
+            </div>
+        </div>
+
+        <!-- MACHINE 4 -->
+        <div class="machine-card" data-category="freeweight">
+            <div class="machine-image-wrapper">
+                <img src="{% static 'images/mac_squat_rig.png' %}" alt="Monster Power Squat Rig">
+            </div>
+            <div class="machine-card-content">
+                <div>
+                    <div class="machine-meta">
+                        <span class="brand-badge">Rogue Fitness</span>
+                        <span class="muscle-badge">Full Body / Posterior</span>
+                    </div>
+                    <h3 class="machine-title">Monster Power Squat Rig</h3>
+                    <p class="machine-desc">Heavy duty structural steel rig with safety spotters and premium knurled Olympic barbells.</p>
+                </div>
+                <button class="action-btn" onclick="openGuide('Monster Power Squat Rig', 'Rogue Fitness', 'Quadriceps, Glutes & Core', 'Position bar on traps, unlock hook, step back. Squat downward driving hips back until thighs are parallel. Press back upward.', 'Keep spine neutral. Safety bars must be set at correct bottom heights.')">
+                    <i class="fa-solid fa-circle-info"></i> Workout Motion Guide
+                </button>
+            </div>
+        </div>
+
+        <!-- MACHINE 5 -->
+        <div class="machine-card" data-category="strength">
+            <div class="machine-image-wrapper">
+                <img src="{% static 'images/mac_lat_pulldown.png' %}" alt="Wide Lat Pull Down">
+            </div>
+            <div class="machine-card-content">
+                <div>
+                    <div class="machine-meta">
+                        <span class="brand-badge">Hammer Strength</span>
+                        <span class="muscle-badge">Latissimus Dorsi</span>
+                    </div>
+                    <h3 class="machine-title">Wide Lat Pull Down</h3>
+                    <p class="machine-desc">Overhead pulley station with wide-grip handles, optimized for back thickness and posture improvement.</p>
+                </div>
+                <button class="action-btn" onclick="openGuide('Wide Lat Pull Down', 'Hammer Strength', 'Lats, Rhomboids & Biceps', 'Grip bar wider than shoulder width. Adjust knee roller pads. Pull bar down towards upper chest while leaning slightly back.', 'Pull with elbows, not biceps. Squeeze shoulder blades at bottom of motion.')">
+                    <i class="fa-solid fa-circle-info"></i> Workout Motion Guide
+                </button>
+            </div>
+        </div>
+
+        <!-- MACHINE 6 -->
+        <div class="machine-card" data-category="freeweight">
+            <div class="machine-image-wrapper">
+                <img src="{% static 'images/mac_cable_cross.png' %}" alt="Olympic Cable Cross Station">
+            </div>
+            <div class="machine-card-content">
+                <div>
+                    <div class="machine-meta">
+                        <span class="brand-badge">Rogue Fitness</span>
+                        <span class="muscle-badge">Core & Shoulders</span>
+                    </div>
+                    <h3 class="machine-title">Olympic Cable Cross Station</h3>
+                    <p class="machine-desc">Double pulley cross column with dynamic heights and multiple accessories for full joint mobilization.</p>
+                </div>
+                <button class="action-btn" onclick="openGuide('Olympic Cable Cross Station', 'Rogue Fitness', 'Chest Flyes, Shoulders & Arms', 'Attach handles, set pulley heights. Step forward, keep elbows bent slightly, pull handles together in front of chest.', 'Avoid swinging body. Control recovery phase with resistance resisting.')">
+                    <i class="fa-solid fa-circle-info"></i> Workout Motion Guide
+                </button>
+            </div>
+        </div>
+
+        <!-- MACHINE 7 -->
+        <div class="machine-card" data-category="strength">
+            <div class="machine-image-wrapper">
+                <img src="{% static 'images/mac_smith_machine.png' %}" alt="Pro Smith Machine">
+            </div>
+            <div class="machine-card-content">
+                <div>
+                    <div class="machine-meta">
+                        <span class="brand-badge">Hammer Strength</span>
+                        <span class="muscle-badge">Full Body / Joints</span>
+                    </div>
+                    <h3 class="machine-title">Pro Smith Machine</h3>
+                    <p class="machine-desc">Plate loaded vertical bar guide rails. Ideal for controlled squats, chest press, and shrug variations.</p>
+                </div>
+                <button class="action-btn" onclick="openGuide('Pro Smith Machine', 'Hammer Strength', 'Chest, Shoulders & Legs', 'Unrack bar at desired height, perform controlled vertical squats or chest presses. Rotate wrists to re-rack bar instantly.', 'Maintain flat back and keep weight balanced through center of feet.')">
+                    <i class="fa-solid fa-circle-info"></i> Workout Motion Guide
+                </button>
+            </div>
+        </div>
+
+        <!-- MACHINE 8 -->
+        <div class="machine-card" data-category="freeweight">
+            <div class="machine-image-wrapper">
+                <img src="{% static 'images/mac_dumbbell_rack.png' %}" alt="Olympic Dumbbells Station">
+            </div>
+            <div class="machine-card-content">
+                <div>
+                    <div class="machine-meta">
+                        <span class="brand-badge">Rogue Fitness</span>
+                        <span class="muscle-badge">Upper Body Strength</span>
+                    </div>
+                    <h3 class="machine-title">Olympic Dumbbells Station</h3>
+                    <p class="machine-desc">Solid steel dumbbell rows from 5kg to 50kg, supported by multi-adjustable heavy-duty benches.</p>
+                </div>
+                <button class="action-btn" onclick="openGuide('Olympic Dumbbells Station', 'Rogue Fitness', 'Biceps, Chest & Shoulders', 'Select pairs matching training sets. Adjust bench incline to target different angles. Perform curls, presses, or raises.', 'Keep wrists neutral and control eccentric descent of dumbbells.')">
+                    <i class="fa-solid fa-circle-info"></i> Workout Motion Guide
+                </button>
+            </div>
+        </div>
+
+        <!-- MACHINE 9 -->
+        <div class="machine-card" data-category="cardio">
+            <div class="machine-image-wrapper">
+                <img src="{% static 'images/mac_spin_bike.png' %}" alt="Spin Lifecycle Bike">
+            </div>
+            <div class="machine-card-content">
+                <div>
+                    <div class="machine-meta">
+                        <span class="brand-badge">Life Fitness</span>
+                        <span class="muscle-badge">Stamina & Calorie Burn</span>
+                    </div>
+                    <h3 class="machine-title">Spin Lifecycle Bike</h3>
+                    <p class="machine-desc">Indoor fitness cycle with magnetic resistance wheels and detailed electronic console telemetry.</p>
+                </div>
+                <button class="action-btn" onclick="openGuide('Spin Lifecycle Bike', 'Life Fitness', 'Quads, Hamstrings & Cardio', 'Adjust seat and handle height for comfort. Set resistance knob. Pedal actively to match pacing goals.', 'Keep flat back posture. Do not over-extend knees at base of rotation.')">
+                    <i class="fa-solid fa-circle-info"></i> Workout Motion Guide
+                </button>
+            </div>
+        </div>
+
+        <!-- MACHINE 10 -->
+        <div class="machine-card" data-category="cardio">
+            <div class="machine-image-wrapper">
+                <img src="{% static 'images/mac_rowing_machine.png' %}" alt="Concept2 Rowing Ergometer">
+            </div>
+            <div class="machine-card-content">
+                <div>
+                    <div class="machine-meta">
+                        <span class="brand-badge">Concept2</span>
+                        <span class="muscle-badge">Full Body Conditioning</span>
+                    </div>
+                    <h3 class="machine-title">Rowing Ergometer</h3>
+                    <p class="machine-desc">Air-resistance rowing ergometer targeting 85% of full body muscle mass per stroke. Digital PM5 telemetry.</p>
+                </div>
+                <button class="action-btn" onclick="openGuide('Rowing Ergometer', 'Concept2', 'Back, Legs, Core & Stamina', 'Sit on slider, strap feet, grab handle. Drive back with legs, lean slightly back, pull handle to lower ribs.', 'Order of movement: legs first, then hips, then arms on drive. Reverse on return.')">
+                    <i class="fa-solid fa-circle-info"></i> Workout Motion Guide
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Motion Guide Modal -->
+    <div class="modal-overlay" id="guide-modal" onclick="if(event.target == this) closeGuide()">
+        <div class="guide-card">
+            <button type="button" class="close-btn" onclick="closeGuide()"><i class="fa-solid fa-xmark"></i></button>
+            <div class="machine-icon-box" style="margin: 0 auto 20px; width: 70px; height: 70px; border-radius: 20px; background: rgba(255, 94, 58, 0.06); border: 1px solid rgba(255, 94, 58, 0.15); display: flex; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-dumbbell" id="guide-icon" style="font-size: 2.2rem; color: #ff5e3a;"></i>
+            </div>
+            <div class="guide-badge-row">
+                <span class="guide-brand-label" id="guide-brand">Brand</span>
+                <span class="guide-muscle-label" id="guide-muscle">Muscles</span>
+            </div>
+            <h3 id="guide-title">Machine Title</h3>
+            
+            <div class="guide-body">
+                <h4>Correct Motion Path</h4>
+                <p id="guide-motion">Perform movement path instructions here.</p>
+                
+                <h4>Coach Pro-Tip</h4>
+                <p id="guide-tip" style="color: #ff5e3a;">Keep core engaged.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Category Filter
+        function filterCategory(catName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('tab-' + catName).classList.add('active');
+
+            document.querySelectorAll('.machine-card').forEach(card => {
+                if (catName === 'all' || card.getAttribute('data-category') === catName) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Guide Modal
+        function openGuide(title, brand, muscle, motion, tip) {
+            document.getElementById('guide-title').innerText = title;
+            document.getElementById('guide-brand').innerText = brand;
+            document.getElementById('guide-muscle').innerText = muscle;
+            document.getElementById('guide-motion').innerText = motion;
+            document.getElementById('guide-tip').innerText = tip;
+
+            document.getElementById('guide-modal').classList.add('active');
+        }
+
+        function closeGuide() {
+            document.getElementById('guide-modal').classList.remove('active');
+        }
+    </script>
+{% endblock %}
+</body>
+</html>

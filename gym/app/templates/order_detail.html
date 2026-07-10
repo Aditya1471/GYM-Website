@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            color: #333;
+        }
+        .order-details, .cart-items {
+            margin-bottom: 20px;
+        }
+        .cart-items ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .cart-items li {
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Order Details</h1>
+        <div class="order-details">
+            <p>Name: {{ customer.user }}</p>
+            <p>Locality: {{ customer.locality }}</p>
+            <p>Product name:{{ cart_item.product.name }}</p>
+            <p>State: {{ customer.state }}</p>
+            <p>Total: {{ total_price }}</p>
+        </div>
+        <div class="cart-items">
+            <h2>Cart Items</h2>
+            <ul>
+                {% for cart_item in cart_items %}
+                    <li>{{ cart_item.product.name }} - {{ cart_item.quantity }} x {{ cart_item.product.price }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

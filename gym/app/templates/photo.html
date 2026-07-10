@@ -1,0 +1,524 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'main' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Hub - Fit-Hit Gym</title>
+    <script src="https://kit.fontawesome.com/ccdbd762c2.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background: linear-gradient(rgba(10, 10, 12, 0.88), rgba(10, 10, 12, 0.92)), url('{% static "images/gym_bg_main.png" %}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            color: #fff;
+        }
+
+        .header-section {
+            text-align: center;
+            padding: 50px 20px 20px;
+        }
+
+        .header-section h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 0 10px;
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-section p {
+            color: #a1a1a6;
+            font-size: 1.05rem;
+            margin: 0;
+        }
+
+        /* Hub Selector Tabs */
+        .hub-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 30px auto 40px;
+            max-width: 1000px;
+            padding: 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .hub-tab {
+            padding: 14px 24px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 30px;
+            color: #d1d1d6;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hub-tab:hover {
+            color: #fff;
+            border-color: rgba(255, 94, 58, 0.4);
+            background-color: rgba(255, 94, 58, 0.05);
+        }
+
+        .hub-tab.active {
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(255, 69, 0, 0.35);
+            transform: translateY(-2px);
+        }
+
+        /* Cinema Hub Grid Container */
+        .hub-container {
+            max-width: 1100px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+        }
+
+        .hub-pane {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .hub-pane.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* The Cinema Portal layout */
+        .cinema-portal {
+            display: grid;
+            grid-template-columns: 1.8fr 1fr;
+            gap: 30px;
+            background: rgba(20, 20, 22, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Player panel on left */
+        .player-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .main-player-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            background-color: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .main-player-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border: none;
+        }
+
+        .video-details h2 {
+            margin: 0 0 10px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .video-details p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #a1a1a6;
+            line-height: 1.6;
+        }
+
+        /* Playlist sidebar on right */
+        .playlist-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #fff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 10px;
+            margin: 0;
+        }
+
+        .playlist-items {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .playlist-item {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .playlist-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 94, 58, 0.25);
+        }
+
+        .playlist-item.active {
+            background-color: rgba(255, 94, 58, 0.06);
+            border-color: #ff5e3a;
+        }
+
+        .playlist-item i {
+            font-size: 1.4rem;
+            color: #ff5e3a;
+            transition: transform 0.3s ease;
+        }
+
+        .playlist-item:hover i {
+            transform: scale(1.1);
+        }
+
+        .playlist-item-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .playlist-item-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .playlist-item-duration {
+            font-size: 0.8rem;
+            color: #71717a;
+            margin-top: 2px;
+        }
+
+        /* Disciplines specs */
+        .discipline-specs {
+            margin-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 20px;
+        }
+
+        .specs-title {
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .specs-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .specs-list li {
+            font-size: 0.85rem;
+            color: #d1d1d6;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .specs-list li::before {
+            content: "\f00c";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            color: #ff5e3a;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 900px) {
+            .cinema-portal {
+                grid-template-columns: 1fr;
+                gap: 25px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-section">
+        <h1>Fit-Hit Training Hub</h1>
+        <p>Explore professional training videos and build your layout</p>
+    </div>
+
+    <!-- Hub tabs selector -->
+    <div class="hub-tabs">
+        <div class="hub-tab active" id="tab-basic" onclick="switchHubPane('basic')"><i class="fa-solid fa-person-running"></i> Basic Fitness</div>
+        <div class="hub-tab" id="tab-muscle" onclick="switchHubPane('muscle')"><i class="fa-solid fa-dumbbell"></i> Muscle Training</div>
+        <div class="hub-tab" id="tab-yoga" onclick="switchHubPane('yoga')"><i class="fa-solid fa-child-reaching"></i> Yoga Training</div>
+        <div class="hub-tab" id="tab-body" onclick="switchHubPane('body')"><i class="fa-solid fa-medal"></i> Bodybuilding</div>
+    </div>
+
+    <div class="hub-container">
+        <!-- BASIC FITNESS PANE -->
+        <div class="hub-pane active" id="pane-basic">
+            <div class="cinema-portal">
+                <div class="player-panel">
+                    <div class="main-player-wrapper">
+                        <video id="player-basic" src="{% static 'images/basic.mp4' %}" controls></video>
+                    </div>
+                    <div class="video-details">
+                        <h2 id="title-basic">Basic Fitness - Introductory Overview</h2>
+                        <p>Being physically active can improve your brain health, help manage weight, reduce the risk of disease, strengthen bones and muscles. Basic movements (Pull, Push, Squat, Lunge, Hinge, Rotation, and Gait) build the foundation of physical health.</p>
+                    </div>
+                </div>
+                <div class="playlist-sidebar">
+                    <h3 class="sidebar-title">Select Module</h3>
+                    <div class="playlist-items">
+                        <div class="playlist-item active" id="basic-item-1" onclick="playVideo('basic', '{% static \'images/basic.mp4\' %}', 'Basic Fitness - Introductory Overview', 1)">
+                            <i class="fa-solid fa-circle-play"></i>
+                            <div class="playlist-item-text">
+                                <span class="playlist-item-title">1. Introductory Overview</span>
+                                <span class="playlist-item-duration">Duration: 5 mins</span>
+                            </div>
+                        </div>
+                        <div class="playlist-item" id="basic-item-2" onclick="playVideo('basic', '{% static \'images/basic2.mp4\' %}', 'Basic Fitness - Advanced Techniques', 2)">
+                            <i class="fa-solid fa-circle-play"></i>
+                            <div class="playlist-item-text">
+                                <span class="playlist-item-title">2. Advanced Techniques</span>
+                                <span class="playlist-item-duration">Duration: 7 mins</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="discipline-specs">
+                        <h4 class="specs-title">Key Fitness Steps</h4>
+                        <ul class="specs-list">
+                            <li>Cardiovascular Endurance</li>
+                            <li>Muscular Strength</li>
+                            <li>Muscular Endurance</li>
+                            <li>Flexibility</li>
+                            <li>Body Composition</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MUSCLE TRAINING PANE -->
+        <div class="hub-pane" id="pane-muscle">
+            <div class="cinema-portal">
+                <div class="player-panel">
+                    <div class="main-player-wrapper">
+                        <video id="player-muscle" src="{% static 'images/muscle.mp4' %}" controls></video>
+                    </div>
+                    <div class="video-details">
+                        <h2 id="title-muscle">Muscle Training - Core Mechanics</h2>
+                        <p>Challenge your muscles under resistance to promote hypertrophy, metabolic fitness, and muscle density. Warm up properly and gently stretch your muscles after your workout.</p>
+                    </div>
+                </div>
+                <div class="playlist-sidebar">
+                    <h3 class="sidebar-title">Select Module</h3>
+                    <div class="playlist-items">
+                        <div class="playlist-item active" id="muscle-item-1" onclick="playVideo('muscle', '{% static \'images/muscle.mp4\' %}', 'Muscle Training - Core Mechanics', 1)">
+                            <i class="fa-solid fa-circle-play"></i>
+                            <div class="playlist-item-text">
+                                <span class="playlist-item-title">1. Core Mechanics</span>
+                                <span class="playlist-item-duration">Duration: 6 mins</span>
+                            </div>
+                        </div>
+                        <div class="playlist-item" id="muscle-item-2" onclick="playVideo('muscle', '{% static \'images/muscle2.mp4\' %}', 'Muscle Training - High Intensity', 2)">
+                            <i class="fa-solid fa-circle-play"></i>
+                            <div class="playlist-item-text">
+                                <span class="playlist-item-title">2. High Intensity Routine</span>
+                                <span class="playlist-item-duration">Duration: 8 mins</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="discipline-specs">
+                        <h4 class="specs-title">Key Strength Steps</h4>
+                        <ul class="specs-list">
+                            <li>Warm Up first</li>
+                            <li>Start with Lighter Weight</li>
+                            <li>Rest 60s between sets</li>
+                            <li>Limit workouts to 45 mins</li>
+                            <li>Gently stretch after</li>
+                            <li>Rest 1-2 days between</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- YOGA TRAINING PANE -->
+        <div class="hub-pane" id="pane-yoga">
+            <div class="cinema-portal">
+                <div class="player-panel">
+                    <div class="main-player-wrapper">
+                        <video id="player-yoga" src="{% static 'images/yoga.mp4' %}" controls></video>
+                    </div>
+                    <div class="video-details">
+                        <h2 id="title-yoga">Yoga Training - Meditative Flow</h2>
+                        <p>Yoga heals from inside. It works brilliantly on mental health, reducing stress, building lean flexibility, and improving joint flexibility and posture.</p>
+                    </div>
+                </div>
+                <div class="playlist-sidebar">
+                    <h3 class="sidebar-title">Select Module</h3>
+                    <div class="playlist-items">
+                        <div class="playlist-item active" id="yoga-item-1" onclick="playVideo('yoga', '{% static \'images/yoga.mp4\' %}', 'Yoga Training - Meditative Flow', 1)">
+                            <i class="fa-solid fa-circle-play"></i>
+                            <div class="playlist-item-text">
+                                <span class="playlist-item-title">1. Meditative Flow</span>
+                                <span class="playlist-item-duration">Duration: 8 mins</span>
+                            </div>
+                        </div>
+                        <div class="playlist-item" id="yoga-item-2" onclick="playVideo('yoga', '{% static \'images/yyoga.mp4\' %}', 'Yoga Training - Core Asanas', 2)">
+                            <i class="fa-solid fa-circle-play"></i>
+                            <div class="playlist-item-text">
+                                <span class="playlist-item-title">2. Core Asanas</span>
+                                <span class="playlist-item-duration">Duration: 10 mins</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="discipline-specs">
+                        <h4 class="specs-title">Ashtanga Yoga Limbs</h4>
+                        <ul class="specs-list">
+                            <li>Yama (Abstinences)</li>
+                            <li>Niyama (Observances)</li>
+                            <li>Asana (Yoga Postures)</li>
+                            <li>Pranayama (Breath Control)</li>
+                            <li>Pratyahara (Senses)</li>
+                            <li>Dhyana (Meditation)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BODYBUILDING PANE -->
+        <div class="hub-pane" id="pane-body">
+            <div class="cinema-portal">
+                <div class="player-panel">
+                    <div class="main-player-wrapper">
+                        <video id="player-body" src="{% static 'images/body.mp4' %}" controls></video>
+                    </div>
+                    <div class="video-details">
+                        <h2 id="title-body">Bodybuilding - Sculpting & Overload</h2>
+                        <p>Sculpt your ideal physique. Focus on aesthetic symmetry, progressive overload, and high intensity training. Build structural power through goal-oriented training.</p>
+                    </div>
+                </div>
+                <div class="playlist-sidebar">
+                    <h3 class="sidebar-title">Select Module</h3>
+                    <div class="playlist-items">
+                        <div class="playlist-item active" id="body-item-1" onclick="playVideo('body', '{% static \'images/body.mp4\' %}', 'Bodybuilding - Sculpting & Overload', 1)">
+                            <i class="fa-solid fa-circle-play"></i>
+                            <div class="playlist-item-text">
+                                <span class="playlist-item-title">1. Sculpting & Overload</span>
+                                <span class="playlist-item-duration">Duration: 7 mins</span>
+                            </div>
+                        </div>
+                        <div class="playlist-item" id="body-item-2" onclick="playVideo('body', '{% static \'images/body2.mp4\' %}', 'Bodybuilding - Pro Contest Prep', 2)">
+                            <i class="fa-solid fa-circle-play"></i>
+                            <div class="playlist-item-text">
+                                <span class="playlist-item-title">2. Pro Contest Prep</span>
+                                <span class="playlist-item-duration">Duration: 9 mins</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="discipline-specs">
+                        <h4 class="specs-title">Advanced Techniques</h4>
+                        <ul class="specs-list">
+                            <li>Warm Up first</li>
+                            <li>Lighter start weights</li>
+                            <li>Rest 60s between sets</li>
+                            <li>Limit workouts to 45 mins</li>
+                            <li>Gently stretch after</li>
+                            <li>Rest 1-2 days between</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switcher
+        function switchHubPane(paneName) {
+            // Remove active classes
+            document.querySelectorAll('.hub-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.hub-pane').forEach(pane => {
+                pane.classList.remove('active');
+                // Pause video when switching tab
+                const video = pane.querySelector('video');
+                if (video) video.pause();
+            });
+
+            // Set active
+            document.getElementById('tab-' + paneName).classList.add('active');
+            document.getElementById('pane-' + paneName).classList.add('active');
+        }
+
+        // Playlist video selector
+        function playVideo(paneName, videoSrc, titleText, itemIndex) {
+            const player = document.getElementById('player-' + paneName);
+            const titleEl = document.getElementById('title-' + paneName);
+            
+            // Set source and title
+            player.src = videoSrc;
+            titleEl.innerText = titleText;
+            player.play();
+
+            // Set active item styling
+            document.querySelectorAll('#pane-' + paneName + ' .playlist-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.getElementById(paneName + '-item-' + itemIndex).classList.add('active');
+        }
+    </script>
+{% endblock %}
+</body>
+</html>
+</body>
+</html>

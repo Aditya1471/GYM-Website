@@ -1,0 +1,423 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://kit.fontawesome.com/ccdbd762c2.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* General body and font styling */
+        body {
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+    
+        /* Sticky/Glassmorphic Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: rgba(10, 10, 12, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 12px 50px;
+            color: white;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+        }
+
+        /* Ambient animated glowing border under header */
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1.5px;
+            background: linear-gradient(90deg, transparent, #ff4500, #ff8c00, transparent);
+            box-shadow: 0 1px 15px rgba(255, 94, 58, 0.5);
+        }
+    
+        /* Logo styling */
+        .left {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+    
+        .left img {
+            height: 52px;
+            width: auto;
+            display: block;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-left: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+    
+        .left img:hover {
+            transform: scale(1.06) rotate(-1deg);
+            border-color: rgba(255, 94, 58, 0.35);
+            box-shadow: 0 0 20px rgba(255, 94, 58, 0.25);
+        }
+    
+        /* Navbar links styling */
+        .navbar {
+            flex: 2;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+    
+        .navbar nav ul {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            margin: 0;
+            align-items: center;
+            gap: 10px;
+        }
+    
+        .navbar nav ul li {
+            position: relative;
+        }
+    
+        .navbar nav ul li a {
+            text-decoration: none;
+            color: #d1d1d6;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 10px 18px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid transparent;
+        }
+    
+        .navbar nav ul li a i {
+            font-size: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar nav ul li a:hover i {
+            transform: translateY(-1px);
+        }
+
+        .navbar nav ul li a:hover,
+        .navbar nav ul li a.active-link {
+            color: #ff5e3a;
+            background-color: rgba(255, 94, 58, 0.06);
+            border-color: rgba(255, 94, 58, 0.2);
+            box-shadow: 0 0 15px rgba(255, 94, 58, 0.1);
+        }
+    
+        /* Nav active bar line indicator (sliding effect) */
+        .navbar nav ul li a::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff4500, #ff8c00);
+            border-radius: 2px;
+            transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 0 10px rgba(255, 69, 0, 0.5);
+        }
+    
+        .navbar nav ul li a.active-link::after {
+            width: 70%;
+        }
+    
+        .navbar nav ul li a:hover::after {
+            width: 70%;
+        }
+    
+        /* Dropdown styling with custom transitions */
+        .dropdown-content {
+            position: absolute;
+            background: rgba(20, 20, 22, 0.9);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            min-width: 220px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            z-index: 2000;
+            border-radius: 16px;
+            top: 110%;
+            left: 50%;
+            transform: translateX(-50%) scale(0.95);
+            padding: 10px 0;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            opacity: 0;
+            pointer-events: none;
+            display: block;
+        }
+        
+        .dropdown-content a {
+            color: #d1d1d6 !important;
+            padding: 10px 20px !important;
+            text-decoration: none;
+            display: block;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            border-radius: 0 !important;
+            transition: all 0.2s ease !important;
+            text-align: left;
+        }
+    
+        .dropdown-content a:hover {
+            color: #fff !important;
+            background-color: rgba(255, 94, 58, 0.15) !important;
+            padding-left: 25px !important;
+        }
+    
+        .dropdown:hover .dropdown-content {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+            pointer-events: auto;
+        }
+    
+        /* Cart Badge styling */
+        .cart-number {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 10px;
+            box-shadow: 0 0 10px rgba(255, 69, 0, 0.4);
+            border: 1.5px solid #0f0f0f;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); box-shadow: 0 0 15px rgba(255, 69, 0, 0.7); }
+            100% { transform: scale(1); }
+        }
+    
+        /* Sidebar styling (Glassmorphism Sidebar) */
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            background-color: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            overflow-x: hidden;
+            transition: width 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+            padding-top: 80px;
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    
+        .sidebar a {
+            padding: 14px 28px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #a1a1a6;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            border-radius: 0 30px 30px 0;
+            margin-right: 20px;
+        }
+    
+        .sidebar a:hover {
+            color: #fff;
+            background-color: rgba(255, 94, 58, 0.1);
+            padding-left: 35px;
+        }
+    
+        .sidebar .closebtn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 24px;
+            color: #a1a1a6;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 0;
+        }
+    
+        .sidebar .closebtn:hover {
+            color: #fff;
+            background-color: rgba(255, 94, 58, 0.2);
+            transform: rotate(90deg);
+        }
+    
+        /* Modern Hamburger Button */
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            background-color: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            padding: 10px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    
+        .openbtn:hover {
+            background-color: rgba(255, 94, 58, 0.15);
+            border-color: rgba(255, 94, 58, 0.3);
+            color: #ff5e3a;
+        }
+    
+        /* Responsive adjustments */
+        @media screen and (max-width: 1024px) {
+            header {
+                padding: 10px 20px;
+            }
+            .left img {
+                margin-left: 50px;
+            }
+            .navbar {
+                display: none; /* Hide standard nav on tablet/mobile and rely on sidebar */
+            }
+            .openbtn {
+                display: flex;
+            }
+        }
+        
+        @media screen and (min-width: 1025px) {
+            .openbtn {
+                display: none; /* Hide hamburger on desktop */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="mySidebar" class="sidebar">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            {% if request.user.is_authenticated %}
+            <a href="/profile" style="border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 14px; color: #ff5e3a;"><i class="fa fa-user-circle"></i> {{ request.user }}</a>
+            <a href="/index"><i class="fa fa-home"></i> HOME</a>
+            <a href="/classes"><i class="fas fa-save"></i> CLASSES</a>
+            <a href="{% url 'product' %}"><i class="fas fa-cart-arrow-down"></i> PRODUCTS</a>
+            <a href="/cart"><i class="fa fa-shopping-cart"></i> CART ({{ cart_length }})</a>
+            <a href="/machines"><i class="fa-solid fa-dumbbell"></i> EQUIPMENT</a>
+            <a href="/contact"><i class="fa fa-phone"></i> CONTACT</a>
+            <a href="/about"><i class="fas fa-info-circle"></i> ABOUT</a>
+            <a href="/blog"><i class="fa-regular fa-newspaper"></i> BLOG</a>
+            <a href="/calculator"><i class="fa-solid fa-calculator"></i> CALCULATORS</a>
+            {% if request.user.is_superuser %}
+            <a href="/admin-panel" style="color: #ff8c00; border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: 5px;"><i class="fa-solid fa-user-shield"></i> ADMIN PANEL</a>
+            {% endif %}
+            <a href="/logout" style="color: #ff5a5a; border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: 10px;"><i class="fas fa-sign-out-alt"></i> LOG OUT</a>
+            {% else %}
+            <a href="/account"><i class="fas fa-user"></i> ACCOUNT / LOGIN</a>
+            {% endif %}
+        </div>
+        <button class="openbtn" onclick="openNav()">&#9776;</button>
+        <div class="left">
+            <img src="{% static 'images/fit-hit.png' %}?v=1.1" alt="Logo">
+        </div>
+        <div class="right">
+            <div class="navbar">
+                <nav>
+                    <ul>
+                        {% if request.user.is_authenticated %}
+                        <li class="dropdown"><a href="/profile"><i class="fa fa-user-circle" aria-hidden="true"></i> {{ request.user }}</a></li>
+                        <li class="dropdown"><a href="/index"><i class="fa fa-home"></i> HOME</a></li>
+                        <li class="dropdown"><a href="/classes"><i class="fas fa-save"></i> CLASSES</a></li>
+                        <li class="dropdown">
+                            <a class="dropbtn" href="{% url 'product' %}"><i class="fas fa-cart-arrow-down"></i> PRODUCTS <i class="fa-solid fa-chevron-down"></i></a>
+                            <div class="dropdown-content">
+                                <a href="/search/?q=Whey+Protein">Whey Protein</a>
+                                <a href="/search/?q=Pre+Workout">Pre Workout</a>
+                                <a href="/search/?q=creatine">Creatine</a>
+                                <a href="/search/?q=fish+oil">Fish Oil</a>
+                                <a href="/search/?q=mass+gainer">Mass Gainer</a>
+                            </div>
+                        </li>
+                        <li class="dropdown"><a href="/machines"><i class="fa-solid fa-dumbbell"></i> EQUIPMENT</a></li>
+                        <li class="dropdown"><a href="/contact"><i class="fa fa-phone"></i> CONTACT</a></li>
+                        <li class="dropdown"><a href="/about"><i class="fas fa-info-circle"></i> ABOUT</a></li>
+                        <li class="dropdown"><a href="/blog"><i class="fa-regular fa-newspaper"></i> BLOG</a></li>
+                        <li class="dropdown"><a href="/calculator"><i class="fa-solid fa-calculator"></i> CALCULATORS</a></li>
+                        {% if request.user.is_superuser %}
+                        <li class="dropdown"><a href="/admin-panel"><i class="fa-solid fa-user-shield"></i> ADMIN</a></li>
+                        {% endif %}
+                        <li class="dropdown"><a href="/logout"><i class="fas fa-sign-out-alt"></i> LOG OUT</a></li>
+                        <li class="dropdown" style="margin-left: 10px;">
+                            <a href="/cart" style="padding: 10px; background-color: rgba(255, 255, 255, 0.05); border-radius: 50%; width: 40px; height: 40px; justify-content: center;"><i class="fa fa-shopping-cart" aria-hidden="true" style="margin: 0; font-size: 16px;"></i></a>
+                            <div class="cart-number" id="cartNumberBadge">
+                                <span class="totalcart" id="gettotalcart">{{ cart_length }}</span>
+                            </div>
+                        </li>
+                        {% else %}
+                        <li class="dropdown"><a href="/account"><i class="fas fa-user"></i> ACCOUNT</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "280px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+        }
+
+        // Active navigation highlighting
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.navbar nav ul li a');
+            
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && currentPath.includes(href) && href !== "/" && href !== "/logout") {
+                    link.classList.add('active-link');
+                } else if (href === "/index" && (currentPath === "/index/" || currentPath === "/")) {
+                    link.classList.add('active-link');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

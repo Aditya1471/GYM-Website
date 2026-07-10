@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'main' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Fit-Hit Gym</title>
+    <script src="https://kit.fontawesome.com/ccdbd762c2.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background: linear-gradient(rgba(10, 10, 12, 0.88), rgba(10, 10, 12, 0.92)), url('{% static "images/gym_bg_main.png" %}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            color: #fff;
+        }
+
+        /* Container Styling */
+        .container {
+            position: relative;
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(15, 15, 17, 0.95), rgba(20, 20, 25, 0.95)), url('{% static "images/bg.jpg" %}');
+            background-size: cover;
+            background-position: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .container p {
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+            color: #fff;
+        }
+
+        /* Contact Section Styling */
+        section {
+            margin: 40px auto;
+            max-width: 1100px;
+            padding: 0 20px;
+        }
+
+        .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            background: rgba(20, 20, 22, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            padding: 20px;
+        }
+
+        .form-container {
+            padding: 30px;
+            flex: 1;
+            min-width: 300px;
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .form-container h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0 0 20px;
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 14px 18px;
+            font-size: 0.95rem;
+            color: #fff;
+            box-sizing: border-box;
+            outline: none;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: #ff5e3a;
+            box-shadow: 0 0 15px rgba(255, 94, 58, 0.15);
+        }
+
+        .contact-form textarea {
+            height: 180px;
+            resize: vertical;
+        }
+
+        .contact-form .btn {
+            border: none;
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #fff;
+            padding: 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .contact-form .btn:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.45);
+        }
+
+        .contact-form .btn:active {
+            transform: translateY(0);
+        }
+
+        .map {
+            flex: 1.2;
+            min-width: 320px;
+            overflow: hidden;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            height: auto;
+            min-height: 400px;
+        }
+
+        .map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            filter: grayscale(0.9) invert(0.9) contrast(1.2); /* Beautiful dark maps styling */
+            display: block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container p {
+                font-size: 2.2rem;
+            }
+
+            .contact-container {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .form-container {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .map {
+                width: 100%;
+                height: 300px;
+                min-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p>Contact Us</p>
+    </div>
+    <section>
+        <div class="contact-container">
+            <div class="form-container">
+                <h3>Message Us</h3>
+                <form class="contact-form" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="name" id="name" placeholder="Your Name" required>
+                    <input type="email" name="email" id="email" placeholder="Enter Email" required>
+                    <input type="tel" name="phone" id="phone" placeholder="Contact Number" required>
+                    <input type="text" name="sub" id="sub" placeholder="Enter Subject" required>
+                    <textarea name="message" id="message" placeholder="Write Message" required></textarea>
+                    <input type="submit" value="Send Message" class="btn">
+                </form>
+            </div>
+            <div class="map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13725.301582256601!2d76.73578028801201!3d30.68111954792167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390fec0fed21dd7b%3A0x723e70a5293d140c!2sPhase%2011%2C%20Sector%2065%2C%20Sahibzada%20Ajit%20Singh%20Nagar%2C%20Punjab!5e0!3m2!1sen!2sin!4v1723291519556!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </section>
+    {% endblock %}
+</body>
+</html>

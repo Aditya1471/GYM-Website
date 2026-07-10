@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Canceled - Fit-Hit Gym</title>
+    <!-- Outfit Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ccdbd762c2.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background: linear-gradient(rgba(10, 10, 12, 0.88), rgba(10, 10, 12, 0.92)), url('{% static "images/gym_bg_main.png" %}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        section {
+            width: 100%;
+            max-width: 550px;
+            margin: 20px;
+            background: rgba(20, 20, 22, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: #ff5a5a;
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #a1a1a6;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .actions {
+            margin-top: 30px;
+        }
+
+        .bt {
+            display: inline-block;
+            padding: 14px 35px;
+            font-size: 1rem;
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .bt:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .bt:active {
+            transform: translateY(0);
+        }
+
+        .cancel-icon {
+            font-size: 4rem;
+            color: #ff5a5a;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <div class="cancel-icon">
+            <i class="fa-solid fa-circle-xmark"></i>
+        </div>
+        <h1>Checkout Canceled</h1>
+        <p>Forgot to add something to your cart? Shop around and then come back to pay!</p>
+        <div class="actions">
+            <a href="{% url 'index' %}" class="bt">Back to Store</a>
+        </div>
+    </section>
+</body>
+</html>

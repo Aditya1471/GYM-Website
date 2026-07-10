@@ -1,0 +1,675 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'main' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Fit-Hit Gym</title>
+    <script src="https://kit.fontawesome.com/ccdbd762c2.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background: linear-gradient(rgba(10, 10, 12, 0.88), rgba(10, 10, 12, 0.92)), url('{% static "images/gym_bg_main.png" %}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            color: #fff;
+        }
+
+        .container {
+            position: relative;
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, rgba(15, 15, 17, 0.95), rgba(20, 20, 25, 0.95)), url('{% static "images/bg.jpg" %}');
+            background-size: cover;
+            background-position: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .container p {
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+            color: #fff;
+        }
+
+        .container5 {
+            text-align: center;
+            padding: 50px 20px 20px;
+        }
+
+        .container5 p {
+            font-size: 2.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .container5 p::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #ff4500, #ff8c00);
+            border-radius: 2px;
+        }
+
+        .container2 {
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 35px;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .row {
+            background-color: rgba(20, 20, 22, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 24px;
+            overflow: hidden;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .image-container {
+            display: block;
+            overflow: hidden;
+            width: 100%;
+            height: 320px;
+            position: relative;
+        }
+
+        .row img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Social Icons Overlay on Hover */
+        .social-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(10, 10, 12, 0.1), rgba(255, 94, 58, 0.75));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .social-icon {
+            width: 44px;
+            height: 44px;
+            background-color: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: #fff;
+            color: #ff5e3a;
+            transform: scale(1.1);
+        }
+
+        .row:hover .social-overlay {
+            opacity: 1;
+        }
+
+        .info-container {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .row p {
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+        }
+
+        .specialization {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #ff8c00;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 5px 12px;
+            background-color: rgba(255, 94, 58, 0.08);
+            border: 1px solid rgba(255, 94, 58, 0.15);
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .trainer-bio {
+            font-size: 0.9rem;
+            color: #a1a1a6;
+            line-height: 1.5;
+            margin: 8px 0 0;
+        }
+
+        .row:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 94, 58, 0.4);
+            box-shadow: 0 15px 35px rgba(255, 94, 58, 0.2);
+        }
+
+        .row:hover img {
+            transform: scale(1.05);
+        }
+
+        .row:hover p {
+            color: #ff5e3a;
+        }
+
+        @media (max-width: 768px) {
+            .container p {
+                font-size: 2.2rem;
+            }
+
+            .container2 {
+                grid-template-columns: 1fr;
+                padding: 20px;
+                gap: 25px;
+            }
+
+            .image-container {
+                height: 280px;
+            }
+        }
+
+        /* Trainer Reviews Styles */
+        .review-toggle-btn, .review-add-btn {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            color: #d1d1d6;
+            padding: 6px 12px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: inherit;
+        }
+        .review-toggle-btn:hover, .review-add-btn:hover {
+            background-color: rgba(255, 94, 58, 0.08);
+            border-color: rgba(255, 94, 58, 0.3);
+            color: #ff8c00;
+        }
+        .trainer-reviews-feed::-webkit-scrollbar {
+            width: 4px;
+        }
+        .trainer-reviews-feed::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+        }
+        @keyframes reviewEntrance {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p>our expert trainers</p>
+    </div>
+    
+    <div class="container5">
+        <p>Meet Our Experts</p>
+    </div>
+    
+    <div class="container2">
+        <!-- Eisha -->
+        <div class="row">
+            <div class="image-container">
+                <img src="{% static 'images/gym expert.jpg' %}" alt="Eisha">
+                <div class="social-overlay">
+                    <a href="#" class="social-icon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="info-container">
+                <p>Eisha</p>
+                <span class="specialization">Yoga & Recovery Guru</span>
+                <p class="trainer-bio">Specializes in somatic yoga flows, recovery techniques, and mindfulness meditation exercises.</p>
+                
+                <div class="rating-display" style="display: flex; align-items: center; gap: 8px; margin: 8px 0;">
+                    <div style="color: #ff8c00; font-size: 0.88rem;">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <span style="font-size: 0.8rem; color: #a1a1a6;" id="trainer-count-eisha">5.0 (12 reviews)</span>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button type="button" class="review-toggle-btn" onclick="toggleTrainerReviews('eisha')">Show Reviews</button>
+                    <button type="button" class="review-add-btn" onclick="toggleReviewForm('eisha')">Add Review</button>
+                </div>
+
+                <div class="trainer-reviews-feed" id="reviews-feed-eisha" style="display: none; margin-top: 15px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; max-height: 200px; overflow-y: auto; text-align: left; width: 100%; box-sizing: border-box;">
+                    <div class="review-comments-list" id="comments-list-eisha">
+                        <div style="border-bottom: 1px solid rgba(255,255,255,0.04); padding-bottom: 8px; margin-bottom: 8px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: #ff8c00; font-weight: 700;">
+                                <span>Rahul K.</span>
+                                <span>⭐⭐⭐⭐⭐</span>
+                            </div>
+                            <p style="margin: 3px 0 0; font-size: 0.8rem; color: #d1d1d6; font-weight: normal; text-align: left;">Eisha's yoga sessions completely cured my lower back pain. Highly recommended!</p>
+                        </div>
+                        <div style="padding-bottom: 4px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: #ff8c00; font-weight: 700;">
+                                <span>Priya M.</span>
+                                <span>⭐⭐⭐⭐⭐</span>
+                            </div>
+                            <p style="margin: 3px 0 0; font-size: 0.8rem; color: #d1d1d6; font-weight: normal; text-align: left;">Super soothing voice, very clear posture guides.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trainer-review-form" id="review-form-eisha" style="display: none; margin-top: 15px; background: rgba(255,69,0,0.04); border: 1px dashed rgba(255,94,58,0.25); border-radius: 12px; padding: 15px; width: 100%; box-sizing: border-box; text-align: left;">
+                    <h5 style="margin: 0 0 10px; font-size: 0.88rem; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;">Write a Review</h5>
+                    <div style="display: flex; gap: 5px; margin-bottom: 10px; font-size: 1.1rem; color: #ff8c00;" id="star-selector-eisha">
+                        <i class="fa-solid fa-star star-select active" onclick="setSelectStars('eisha', 1)" style="cursor: pointer;"></i>
+                        <i class="fa-solid fa-star star-select active" onclick="setSelectStars('eisha', 2)" style="cursor: pointer;"></i>
+                        <i class="fa-solid fa-star star-select active" onclick="setSelectStars('eisha', 3)" style="cursor: pointer;"></i>
+                        <i class="fa-solid fa-star star-select active" onclick="setSelectStars('eisha', 4)" style="cursor: pointer;"></i>
+                        <i class="fa-solid fa-star star-select active" onclick="setSelectStars('eisha', 5)" style="cursor: pointer;"></i>
+                    </div>
+                    <input type="text" id="reviewer-name-eisha" placeholder="Your Name" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 12px; color: #fff; font-size: 0.8rem; margin-bottom: 10px; box-sizing: border-box; outline: none; font-family: inherit;">
+                    <textarea id="reviewer-comment-eisha" placeholder="Write your review here..." rows="2" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 12px; color: #fff; font-size: 0.8rem; margin-bottom: 10px; box-sizing: border-box; resize: none; outline: none; font-family: inherit;"></textarea>
+                    <div style="text-align: right;">
+                        <button type="button" onclick="submitTrainerReview('eisha')" style="background: linear-gradient(135deg, #ff4500, #ff8c00); border: none; border-radius: 8px; padding: 6px 14px; color: #fff; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;">Submit Review</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sehajpreet Singh -->
+        <div class="row">
+            <div class="image-container">
+                <img src="{% static 'images/gym expert2.jpeg' %}" alt="Sehajpreet Singh">
+                <div class="social-overlay">
+                    <a href="#" class="social-icon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="info-container">
+                <p>Sehajpreet Singh</p>
+                <span class="specialization">Strength & Hypertrophy Coach</span>
+                <p class="trainer-bio">Focuses on progressive overload, weight training, powerlifting, and muscle sculpting.</p>
+
+                <div class="rating-display" style="display: flex; align-items: center; gap: 8px; margin: 8px 0;">
+                    <div style="color: #ff8c00; font-size: 0.88rem;">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <span style="font-size: 0.8rem; color: #a1a1a6;" id="trainer-count-sehajpreet">5.0 (18 reviews)</span>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button type="button" class="review-toggle-btn" onclick="toggleTrainerReviews('sehajpreet')">Show Reviews</button>
+                    <button type="button" class="review-add-btn" onclick="toggleReviewForm('sehajpreet')">Add Review</button>
+                </div>
+
+                <div class="trainer-reviews-feed" id="reviews-feed-sehajpreet" style="display: none; margin-top: 15px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; max-height: 200px; overflow-y: auto; text-align: left; width: 100%; box-sizing: border-box;">
+                    <div class="review-comments-list" id="comments-list-sehajpreet">
+                        <div style="border-bottom: 1px solid rgba(255,255,255,0.04); padding-bottom: 8px; margin-bottom: 8px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: #ff8c00; font-weight: 700;">
+                                <span>Aman S.</span>
+                                <span>⭐⭐⭐⭐⭐</span>
+                            </div>
+                            <p style="margin: 3px 0 0; font-size: 0.8rem; color: #d1d1d6; font-weight: normal; text-align: left;">Incredible lifting guidelines. Added 20kg to my deadlift in 6 weeks!</p>
+                        </div>
+                        <div style="padding-bottom: 4px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: #ff8c00; font-weight: 700;">
+                                <span>Vikram J.</span>
+                                <span>⭐⭐⭐⭐⭐</span>
+                            </div>
+                            <p style="margin: 3px 0 0; font-size: 0.8rem; color: #d1d1d6; font-weight: normal; text-align: left;">Extremely technical and very attentive to lifting posture details.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trainer-review-form" id="review-form-sehajpreet" style="display: none; margin-top: 15px; background: rgba(255,69,0,0.04); border: 1px dashed rgba(255,94,58,0.25); border-radius: 12px; padding: 15px; width: 100%; box-sizing: border-box; text-align: left;">
+                    <h5 style="margin: 0 0 10px; font-size: 0.88rem; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;">Write a Review</h5>
+                    <div style="display: flex; gap: 5px; margin-bottom: 10px; font-size: 1.1rem; color: #ff8c00;" id="star-selector-sehajpreet">
+                        <i class="fa-solid fa-star star-select active" onclick="setSelectStars('sehajpreet', 1)" style="cursor: pointer;"></i>
+                        <i class="fa-solid fa-star star-select active" onclick="setSelectStars('sehajpreet', 2)" style="cursor: pointer;"></i>
+                        <i class="fa-solid fa-star star-select active" onclick="setSelectStars('sehajpreet', 3)" style="cursor: pointer;"></i>
+                        <i class="fa-solid fa-star star-select active" onclick="setSelectStars('sehajpreet', 4)" style="cursor: pointer;"></i>
+                        <i class="fa-solid fa-star star-select active" onclick="setSelectStars('sehajpreet', 5)" style="cursor: pointer;"></i>
+                    </div>
+                    <input type="text" id="reviewer-name-sehajpreet" placeholder="Your Name" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 12px; color: #fff; font-size: 0.8rem; margin-bottom: 10px; box-sizing: border-box; outline: none; font-family: inherit;">
+                    <textarea id="reviewer-comment-sehajpreet" placeholder="Write your review here..." rows="2" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 12px; color: #fff; font-size: 0.8rem; margin-bottom: 10px; box-sizing: border-box; resize: none; outline: none; font-family: inherit;"></textarea>
+                    <div style="text-align: right;">
+                        <button type="button" onclick="submitTrainerReview('sehajpreet')" style="background: linear-gradient(135deg, #ff4500, #ff8c00); border: none; border-radius: 8px; padding: 6px 14px; color: #fff; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;">Submit Review</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hardeep Singh -->
+        <div class="row">
+            <div class="image-container">
+                <img src="{% static 'images/gym8.jpg' %}" alt="Hardeep Singh">
+                <div class="social-overlay">
+                    <a href="#" class="social-icon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="info-container">
+                <p>Hardeep Singh</p>
+                <span class="specialization">HIIT & Conditioning Coach</span>
+                <p class="trainer-bio">Helps build stamina and agility through functional loops and high-intensity metabolic bootcamps.</p>
+
+                <div class="rating-display" style="display: flex; align-items: center; gap: 8px; margin: 8px 0;">
+                    <div style="color: #ff8c00; font-size: 0.88rem;">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <span style="font-size: 0.8rem; color: #a1a1a6;" id="trainer-count-hardeep">5.0 (15 reviews)</span>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button type="button" class="review-toggle-btn" onclick="toggleTrainerReviews('hardeep')">Show Reviews</button>
+                    <button type="button" class="review-add-btn" onclick="toggleReviewForm('hardeep')">Add Review</button>
+                </div>
+
+                <div class="trainer-reviews-feed" id="reviews-feed-hardeep" style="display: none; margin-top: 15px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; max-height: 200px; overflow-y: auto; text-align: left; width: 100%; box-sizing: border-box;">
+                    <div class="review-comments-list" id="comments-list-hardeep">
+                        <div style="border-bottom: 1px solid rgba(255,255,255,0.04); padding-bottom: 8px; margin-bottom: 8px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: #ff8c00; font-weight: 700;">
+                                <span>Deepak Y.</span>
+                                <span>⭐⭐⭐⭐⭐</span>
+                            </div>
+                            <p style="margin: 3px 0 0; font-size: 0.8rem; color: #d1d1d6; font-weight: normal; text-align: left;">Insane sweat sessions! Functional training at its best.</p>
+                        </div>
+                        <div style="padding-bottom: 4px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: #ff8c00; font-weight: 700;">
+                                <span>Simran K.</span>
+                                <span>⭐⭐⭐⭐⭐</span>
+                            </div>
+                            <p style="margin: 3px 0 0; font-size: 0.8rem; color: #d1d1d6; font-weight: normal; text-align: left;">High energy, motivational, and pushes you to your absolute limits.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trainer-review-form" id="review-form-hardeep" style="display: none; margin-top: 15px; background: rgba(255,69,0,0.04); border: 1px dashed rgba(255,94,58,0.25); border-radius: 12px; padding: 15px; width: 100%; box-sizing: border-box; text-align: left;">
+                    <h5 style="margin: 0 0 10px; font-size: 0.88rem; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;">Write a Review</h5>
+                    <div style="display: flex; gap: 5px; margin-bottom: 10px; font-size: 1.1rem; color: #ff8c00;" id="star-selector-hardeep">
+                        <i class="fa-solid fa-star star-select active" onclick="setSelectStars('hardeep', 1)" style="cursor: pointer;"></i>
+                        <i class="fa-solid fa-star star-select active" onclick="setSelectStars('hardeep', 2)" style="cursor: pointer;"></i>
+                        <i class="fa-solid fa-star star-select active" onclick="setSelectStars('hardeep', 3)" style="cursor: pointer;"></i>
+                        <i class="fa-solid fa-star star-select active" onclick="setSelectStars('hardeep', 4)" style="cursor: pointer;"></i>
+                        <i class="fa-solid fa-star star-select active" onclick="setSelectStars('hardeep', 5)" style="cursor: pointer;"></i>
+                    </div>
+                    <input type="text" id="reviewer-name-hardeep" placeholder="Your Name" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 12px; color: #fff; font-size: 0.8rem; margin-bottom: 10px; box-sizing: border-box; outline: none; font-family: inherit;">
+                    <textarea id="reviewer-comment-hardeep" placeholder="Write your review here..." rows="2" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 12px; color: #fff; font-size: 0.8rem; margin-bottom: 10px; box-sizing: border-box; resize: none; outline: none; font-family: inherit;"></textarea>
+                    <div style="text-align: right;">
+                        <button type="button" onclick="submitTrainerReview('hardeep')" style="background: linear-gradient(135deg, #ff4500, #ff8c00); border: none; border-radius: 8px; padding: 6px 14px; color: #fff; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;">Submit Review</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sourab -->
+        <div class="row">
+            <div class="image-container">
+                <img src="{% static 'images/gym expert 4.jpg' %}" alt="Sourab">
+                <div class="social-overlay">
+                    <a href="#" class="social-icon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="info-container">
+                <p>Sourab</p>
+                <span class="specialization">Nutrition & Contest Prep Coach</span>
+                <p class="trainer-bio">Guides athletes on nutrition protocols, body composition, and bodybuilding competition prep.</p>
+
+                <div class="rating-display" style="display: flex; align-items: center; gap: 8px; margin: 8px 0;">
+                    <div style="color: #ff8c00; font-size: 0.88rem;">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <span style="font-size: 0.8rem; color: #a1a1a6;" id="trainer-count-sourab">5.0 (9 reviews)</span>
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button type="button" class="review-toggle-btn" onclick="toggleTrainerReviews('sourab')">Show Reviews</button>
+                    <button type="button" class="review-add-btn" onclick="toggleReviewForm('sourab')">Add Review</button>
+                </div>
+
+                <div class="trainer-reviews-feed" id="reviews-feed-sourab" style="display: none; margin-top: 15px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; max-height: 200px; overflow-y: auto; text-align: left; width: 100%; box-sizing: border-box;">
+                    <div class="review-comments-list" id="comments-list-sourab">
+                        <div style="border-bottom: 1px solid rgba(255,255,255,0.04); padding-bottom: 8px; margin-bottom: 8px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: #ff8c00; font-weight: 700;">
+                                <span>Manish P.</span>
+                                <span>⭐⭐⭐⭐⭐</span>
+                            </div>
+                            <p style="margin: 3px 0 0; font-size: 0.8rem; color: #d1d1d6; font-weight: normal; text-align: left;">Extremely systematic diet charts. Lost 8% body fat under him.</p>
+                        </div>
+                        <div style="padding-bottom: 4px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: #ff8c00; font-weight: 700;">
+                                <span>Amit R.</span>
+                                <span>⭐⭐⭐⭐⭐</span>
+                            </div>
+                            <p style="margin: 3px 0 0; font-size: 0.8rem; color: #d1d1d6; font-weight: normal; text-align: left;">Contest prep nutrition was very customized and logical.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trainer-review-form" id="review-form-sourab" style="display: none; margin-top: 15px; background: rgba(255,69,0,0.04); border: 1px dashed rgba(255,94,58,0.25); border-radius: 12px; padding: 15px; width: 100%; box-sizing: border-box; text-align: left;">
+                    <h5 style="margin: 0 0 10px; font-size: 0.88rem; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;">Write a Review</h5>
+                    <div style="display: flex; gap: 5px; margin-bottom: 10px; font-size: 1.1rem; color: #ff8c00;" id="star-selector-sourab">
+                        <i class="fa-solid fa-star star-select active" onclick="setSelectStars('sourab', 1)" style="cursor: pointer;"></i>
+                        <i class="fa-solid fa-star star-select active" onclick="setSelectStars('sourab', 2)" style="cursor: pointer;"></i>
+                        <i class="fa-solid fa-star star-select active" onclick="setSelectStars('sourab', 3)" style="cursor: pointer;"></i>
+                        <i class="fa-solid fa-star star-select active" onclick="setSelectStars('sourab', 4)" style="cursor: pointer;"></i>
+                        <i class="fa-solid fa-star star-select active" onclick="setSelectStars('sourab', 5)" style="cursor: pointer;"></i>
+                    </div>
+                    <input type="text" id="reviewer-name-sourab" placeholder="Your Name" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 12px; color: #fff; font-size: 0.8rem; margin-bottom: 10px; box-sizing: border-box; outline: none; font-family: inherit;">
+                    <textarea id="reviewer-comment-sourab" placeholder="Write your review here..." rows="2" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 8px 12px; color: #fff; font-size: 0.8rem; margin-bottom: 10px; box-sizing: border-box; resize: none; outline: none; font-family: inherit;"></textarea>
+                    <div style="text-align: right;">
+                        <button type="button" onclick="submitTrainerReview('sourab')" style="background: linear-gradient(135deg, #ff4500, #ff8c00); border: none; border-radius: 8px; padding: 6px 14px; color: #fff; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;">Submit Review</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function toggleTrainerReviews(trainerId) {
+            const feed = document.getElementById("reviews-feed-" + trainerId);
+            if (feed) {
+                const isHidden = feed.style.display === "none";
+                feed.style.display = isHidden ? "block" : "none";
+                
+                if (isHidden) {
+                    document.getElementById("review-form-" + trainerId).style.display = "none";
+                }
+            }
+        }
+
+        function toggleReviewForm(trainerId) {
+            const form = document.getElementById("review-form-" + trainerId);
+            if (form) {
+                const isHidden = form.style.display === "none";
+                form.style.display = isHidden ? "block" : "none";
+                
+                if (isHidden) {
+                    document.getElementById("reviews-feed-" + trainerId).style.display = "none";
+                    setSelectStars(trainerId, 5);
+                }
+            }
+        }
+
+        const selectedStarsMap = {};
+
+        function setSelectStars(trainerId, starsCount) {
+            selectedStarsMap[trainerId] = starsCount;
+            const container = document.getElementById("star-selector-" + trainerId);
+            if (container) {
+                const stars = container.querySelectorAll(".star-select");
+                stars.forEach((s, idx) => {
+                    if (idx < starsCount) {
+                        s.classList.add("active");
+                        s.style.color = "#ff8c00";
+                    } else {
+                        s.classList.remove("active");
+                        s.style.color = "#71717a";
+                    }
+                });
+            }
+        }
+
+        function submitTrainerReview(trainerId) {
+            const nameInput = document.getElementById("reviewer-name-" + trainerId);
+            const commentInput = document.getElementById("reviewer-comment-" + trainerId);
+            
+            const name = nameInput.value.trim();
+            const comment = commentInput.value.trim();
+            const stars = selectedStarsMap[trainerId] || 5;
+
+            if (name === "" || comment === "") {
+                alert("Please fill in your name and comment.");
+                return;
+            }
+
+            let starString = "";
+            for (let i = 0; i < stars; i++) starString += "⭐";
+
+            const list = document.getElementById("comments-list-" + trainerId);
+            if (list) {
+                const commentHtml = `
+                    <div style="border-bottom: 1px solid rgba(255,255,255,0.04); padding-bottom: 8px; margin-bottom: 8px; animation: reviewEntrance 0.5s ease-out forwards; opacity: 0; transform: translateY(10px);">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: #ff8c00; font-weight: 700;">
+                            <span>${name}</span>
+                            <span>${starString}</span>
+                        </div>
+                        <p style="margin: 3px 0 0; font-size: 0.8rem; color: #d1d1d6; font-weight: normal; text-align: left;">${comment}</p>
+                    </div>
+                `;
+                list.insertAdjacentHTML('afterbegin', commentHtml);
+                
+                const savedKey = `fit_hit_reviews_${trainerId}`;
+                const saved = JSON.parse(localStorage.getItem(savedKey) || "[]");
+                saved.push({ name, comment, stars });
+                localStorage.setItem(savedKey, JSON.stringify(saved));
+            }
+
+            nameInput.value = "";
+            commentInput.value = "";
+
+            document.getElementById("review-form-" + trainerId).style.display = "none";
+            document.getElementById("reviews-feed-" + trainerId).style.display = "block";
+            
+            updateReviewCounts(trainerId);
+        }
+
+        function updateReviewCounts(trainerId) {
+            const savedKey = `fit_hit_reviews_${trainerId}`;
+            const saved = JSON.parse(localStorage.getItem(savedKey) || "[]");
+            const defaultCounts = {
+                eisha: 12,
+                sehajpreet: 18,
+                hardeep: 15,
+                sourab: 9
+            };
+            const defaultSum = defaultCounts[trainerId] * 5.0;
+            
+            let totalReviews = defaultCounts[trainerId] + saved.length;
+            let sumStars = defaultSum;
+            saved.forEach(r => sumStars += r.stars);
+            
+            const average = (sumStars / totalReviews).toFixed(1);
+            const countSpan = document.getElementById(`trainer-count-${trainerId}`);
+            if (countSpan) {
+                countSpan.innerText = `${average} (${totalReviews} reviews)`;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const trainers = ["eisha", "sehajpreet", "hardeep", "sourab"];
+            trainers.forEach(trainerId => {
+                const savedKey = `fit_hit_reviews_${trainerId}`;
+                const saved = JSON.parse(localStorage.getItem(savedKey) || "[]");
+                const list = document.getElementById("comments-list-" + trainerId);
+                if (list && saved.length > 0) {
+                    saved.forEach(r => {
+                        let starString = "";
+                        for (let i = 0; i < r.stars; i++) starString += "⭐";
+                        const commentHtml = `
+                            <div style="border-bottom: 1px solid rgba(255,255,255,0.04); padding-bottom: 8px; margin-bottom: 8px;">
+                                <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: #ff8c00; font-weight: 700;">
+                                    <span>${r.name}</span>
+                                    <span>${starString}</span>
+                                </div>
+                                <p style="margin: 3px 0 0; font-size: 0.8rem; color: #d1d1d6; font-weight: normal; text-align: left;">${r.comment}</p>
+                            </div>
+                        `;
+                        list.insertAdjacentHTML('afterbegin', commentHtml);
+                    });
+                }
+                updateReviewCounts(trainerId);
+            });
+        });
+    </script>
+    {% endblock %}
+</body>
+</html>

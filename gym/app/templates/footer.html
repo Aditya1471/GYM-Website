@@ -1,0 +1,1023 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/ccdbd762c2.js" crossorigin="anonymous"></script>
+    <style>
+        .footer {
+            background-color: #0a0a0b;
+            padding: 60px 40px 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            position: relative;
+        }
+
+        /* Subtle top ambient glowing border */
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff4500, #ff8c00, transparent);
+        }
+ 
+        .container1 {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+ 
+        .row5 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+        }
+ 
+        .footer-col {
+            flex: 1;
+            min-width: 220px;
+        }
+ 
+        .footer-col h4 {
+            font-size: 16px;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 10px;
+        }
+ 
+        .footer-col h4::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, #ff4500, #ff8c00);
+            height: 2px;
+            width: 40px;
+            border-radius: 1px;
+        }
+ 
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+ 
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+ 
+        .footer-col ul li a {
+            font-size: 15px;
+            color: #a1a1a6;
+            text-decoration: none;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+ 
+        .footer-col ul li a i {
+            font-size: 14px;
+            width: 18px;
+            transition: transform 0.3s ease;
+        }
+ 
+        .footer-col ul li a:hover {
+            color: #ff5e3a;
+            transform: translateX(4px);
+        }
+
+        .footer-col ul li a:hover i {
+            transform: scale(1.1);
+        }
+ 
+        .footer-col img {
+            max-height: 50px;
+            width: auto;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 5px rgba(255, 69, 0, 0.2));
+        }
+
+        .contact-info li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            color: #a1a1a6;
+            margin-bottom: 15px;
+        }
+
+        .contact-info li a {
+            color: #a1a1a6;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-info li a:hover {
+            color: #ff5e3a;
+        }
+
+        .contact-info li i {
+            color: #ff5e3a;
+            font-size: 16px;
+        }
+ 
+        .social-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+        }
+ 
+        .social-links a {
+            display: inline-flex;
+            height: 40px;
+            width: 40px;
+            background-color: rgba(255, 255, 255, 0.05);
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #a1a1a6;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-decoration: none;
+        }
+ 
+        .social-links a:hover {
+            color: #ffffff;
+            transform: translateY(-4px);
+            box-shadow: 0 5px 15px rgba(255, 69, 0, 0.3);
+            border-color: rgba(255, 94, 58, 0.3);
+        }
+ 
+        .social-links .facebook:hover {
+            background-color: #3b5998;
+        }
+ 
+        .social-links .instagram:hover {
+            background-color: #e4405f;
+        }
+ 
+        .social-links .twitter:hover {
+            background-color: #1da1f2;
+        }
+
+        .footer-bottom {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+            font-size: 13px;
+            color: #636366;
+        }
+ 
+        @media (max-width: 768px) {
+            .row5 {
+                flex-direction: column;
+                gap: 30px;
+            }
+ 
+            .footer-col {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <footer class="footer">
+        <div class="container1">
+            <div class="row5">
+                <div class="footer-col">
+                    <img src="{% static 'images/fit-hit.png' %}" alt="Logo">
+                    <ul>
+                        <li><a href="/index"><i class="fa fa-home"></i> Home</a></li>
+                        <li><a href="/classes"><i class="fas fa-save"></i> Classes</a></li>
+                        <li><a href="/product"><i class="fas fa-cart-arrow-down"></i> Products</a></li>
+                        <li><a href="/machines"><i class="fa-solid fa-dumbbell"></i> Equipment</a></li>
+                        <li><a href="/contact"><i class="fa fa-phone"></i> Contact</a></li>
+                        <li><a href="/about"><i class="fas fa-info-circle"></i> About</a></li>
+                        <li><a href="/blog"><i class="fa-regular fa-newspaper"></i> Blog</a></li>
+                        <li><a href="/calculator"><i class="fa-solid fa-calculator"></i> Calculators</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Classes</h4>
+                    <ul>
+                        <li><a href="/photo"><i class="fa-solid fa-chevron-right"></i> Basic Fitness</a></li>
+                        <li><a href="/photo"><i class="fa-solid fa-chevron-right"></i> Muscle Training</a></li>
+                        <li><a href="/photo"><i class="fa-solid fa-chevron-right"></i> Yoga Training</a></li>
+                        <li><a href="/photo"><i class="fa-solid fa-chevron-right"></i> Body Building</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fa fa-phone" aria-hidden="true"></i>
+                            <span>7719527242</span>
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                            <a href="mailto:iamaditya1202@gmail.com">iamaditya1202@gmail.com</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a class="facebook" href="https://www.facebook.com"><i class="fa fa-facebook-official" aria-hidden="true"></i></a>
+                        <a class="instagram" href="https://www.instagram.com/aditya.jha.12/"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                        <a class="twitter" href="https://www.twitter.com"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; {% now "Y" %} Fit-Hit Gym. Designed by Aditya Jha.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- FIT-HIT AI ASSISTANT CHATBOT WIDGET -->
+    <div class="chat-hint-bubble" id="chatHintBubble" onclick="toggleChatWindow()">
+        <span>Hey! Need help booking a trial or choosing a membership? Ask me!</span>
+        <button type="button" class="close-hint-btn" onclick="closeChatHint(event)">&times;</button>
+    </div>
+
+    <div class="fit-hit-chat-trigger" id="chatTriggerBtn" onclick="toggleChatWindow()">
+        <i class="fa-solid fa-robot"></i>
+        <div class="chat-pulse"></div>
+    </div>
+
+    <div class="fit-hit-chat-window" id="chatWindow">
+        <div class="chat-window-header">
+            <div class="chat-header-info">
+                <div class="chat-bot-avatar">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <div class="chat-bot-name">
+                    <h4>Fit-Hit Assistant</h4>
+                    <div class="chat-bot-status">
+                        <div class="status-dot"></div>
+                        <span class="status-text">Online & Ready</span>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="chat-window-close" onclick="toggleChatWindow()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="chat-messages-area" id="chatMsgArea">
+            <!-- Initial bot greeting message -->
+            <div class="chat-bubble-container bot">
+                <div class="chat-msg-avatar">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <div style="position: relative;">
+                    <div class="chat-bubble">
+                        {% if request.user.is_authenticated %}
+                        Hello <strong>{{ request.user.username }}</strong>! Welcome back to Fit-Hit Gym. How can I help you reach your fitness goals today? Please select an option below:
+                        {% else %}
+                        Hello Guest! Welcome to Fit-Hit Gym. How can I help you reach your fitness goals today? Please select an option below:
+                        {% endif %}
+                    </div>
+                    <span class="chat-msg-time" id="greetingTime">00:00 AM</span>
+                    <i class="fa-solid fa-volume-high speak-btn" title="Speak Text" onclick="speakText(this)"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Options List -->
+        <div class="chat-chips-area" id="chatChipsContainer">
+            <!-- Dynamically populated -->
+        </div>
+
+        <!-- Chat Input Footer -->
+        <div class="chat-input-area">
+            <input type="text" class="chat-input-field" id="chatInputField" placeholder="Type your question here..." onkeypress="handleChatEnter(event)">
+            <button type="button" class="chat-send-btn" onclick="sendUserMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <style>
+        /* Floating Chatbot styles */
+        .fit-hit-chat-trigger {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            border-radius: 50%;
+            box-shadow: 0 8px 25px rgba(255, 69, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 9999;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        .fit-hit-chat-trigger:hover {
+            transform: scale(1.08) translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255, 69, 0, 0.6);
+        }
+        .fit-hit-chat-trigger i {
+            color: #fff;
+            font-size: 1.5rem;
+        }
+        .fit-hit-chat-trigger .chat-pulse {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid #ff5e3a;
+            animation: chatPulse 2.5s infinite;
+            pointer-events: none;
+            opacity: 0;
+        }
+        @keyframes chatPulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        /* Floating Hint Bubble */
+        .chat-hint-bubble {
+            position: fixed;
+            bottom: 105px;
+            right: 30px;
+            width: 260px;
+            background: rgba(20, 20, 24, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 94, 58, 0.25);
+            border-radius: 16px;
+            padding: 12px 32px 12px 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            z-index: 9998;
+            font-size: 0.8rem;
+            color: #fff;
+            line-height: 1.4;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            cursor: pointer;
+            pointer-events: none;
+            box-sizing: border-box;
+        }
+        .chat-hint-bubble.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .close-hint-btn {
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            background: none;
+            border: none;
+            color: #a1a1a6;
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s ease;
+        }
+        .close-hint-btn:hover {
+            color: #fff;
+        }
+
+        /* Chat window container */
+        .fit-hit-chat-window {
+            position: fixed;
+            bottom: 105px;
+            right: 30px;
+            width: 380px;
+            height: 520px;
+            background: rgba(15, 15, 17, 0.95);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: translateY(20px) scale(0.95);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .fit-hit-chat-window.active {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Header */
+        .chat-window-header {
+            background: linear-gradient(135deg, #101014, #1a1a20);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .chat-header-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .chat-bot-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.3);
+        }
+        .chat-bot-avatar i {
+            font-size: 1.15rem;
+            color: #fff;
+        }
+        .chat-bot-name h4 {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.3px;
+        }
+        .chat-bot-status {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 2px;
+        }
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background-color: #4cd964;
+            box-shadow: 0 0 8px #4cd964;
+        }
+        .status-text {
+            font-size: 0.72rem;
+            color: #a1a1a6;
+        }
+        .chat-window-close {
+            background: none;
+            border: none;
+            color: #a1a1a6;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chat-window-close:hover {
+            color: #fff;
+        }
+
+        /* Chat Messages */
+        .chat-messages-area {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .chat-bubble-container {
+            display: flex;
+            gap: 12px;
+            max-width: 85%;
+        }
+        .chat-bubble-container.bot {
+            align-self: flex-start;
+        }
+        .chat-bubble-container.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+        .chat-msg-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            color: #a1a1a6;
+            flex-shrink: 0;
+        }
+        .chat-bubble-container.bot .chat-msg-avatar {
+            background: rgba(255, 69, 0, 0.1);
+            border-color: rgba(255, 69, 0, 0.2);
+            color: #ff8c00;
+        }
+        .chat-bubble-container.user .chat-msg-avatar {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.08);
+            color: #fff;
+        }
+        .chat-bubble {
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 0.88rem;
+            line-height: 1.45;
+            color: #e1e1e6;
+        }
+        .chat-bubble-container.bot .chat-bubble {
+            background-color: #1c1c24;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-top-left-radius: 4px;
+        }
+        .chat-bubble-container.user .chat-bubble {
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            color: #fff;
+            border-top-right-radius: 4px;
+            box-shadow: 0 4px 12px rgba(255, 69, 0, 0.15);
+        }
+        .chat-msg-time {
+            font-size: 0.68rem;
+            color: #71717a;
+            display: block;
+            margin-top: 4px;
+            padding: 0 4px;
+        }
+        .chat-bubble-container.user .chat-msg-time {
+            text-align: right;
+        }
+
+        /* Voice Speaker Button */
+        .speak-btn {
+            position: absolute;
+            right: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #71717a;
+            cursor: pointer;
+            font-size: 0.88rem;
+            transition: all 0.2s ease;
+            opacity: 0;
+        }
+        .chat-bubble-container.bot:hover .speak-btn {
+            opacity: 1;
+        }
+        .speak-btn:hover {
+            color: #ff8c00;
+            transform: translateY(-50%) scale(1.15);
+        }
+
+        /* Option Chips Area */
+        .chat-chips-area {
+            padding: 10px 20px;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            background-color: rgba(10, 10, 12, 0.3);
+            scrollbar-width: none;
+        }
+        .chat-chips-area::-webkit-scrollbar {
+            display: none;
+        }
+        .chip-btn {
+            background-color: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 6px 14px;
+            color: #d1d1d6;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.25s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+        .chip-btn:hover {
+            background-color: rgba(255, 94, 58, 0.08);
+            border-color: rgba(255, 94, 58, 0.3);
+            color: #ff8c00;
+            transform: translateY(-1px);
+        }
+
+        /* Typing indicators */
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            padding: 4px 8px;
+        }
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #a1a1a6;
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite;
+        }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+        }
+
+        /* Input area */
+        .chat-input-area {
+            padding: 15px 20px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .chat-input-field {
+            flex-grow: 1;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 12px 16px;
+            color: #fff;
+            font-size: 0.88rem;
+            outline: none;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.3s ease;
+        }
+        .chat-input-field:focus {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: #ff5e3a;
+            box-shadow: 0 0 10px rgba(255, 94, 58, 0.15);
+        }
+        .chat-send-btn {
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            border: none;
+            border-radius: 12px;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #fff;
+            font-size: 1.05rem;
+            box-shadow: 0 4px 12px rgba(255, 69, 0, 0.25);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        .chat-send-btn:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(255, 69, 0, 0.45);
+        }
+    </style>
+
+    <script>
+        const currentUsername = "{{ request.user.username|default:'' }}";
+        const isUserAuthenticated = {% if request.user.is_authenticated %}true{% else %}false{% endif %};
+        const MAIN_OPTIONS = [
+            "Gym Membership Plans", 
+            "Book A Free Trial", 
+            "Supplement Advisor Quiz", 
+            "Gym Machinery & Equipment", 
+            "Coaching & Personal Training", 
+            "Operating Hours & Location", 
+            "Raise A Complaint"
+        ];
+
+        // Set greeting time dynamically & load configurations
+        document.addEventListener("DOMContentLoaded", function() {
+            const timeSpan = document.getElementById("greetingTime");
+            if (timeSpan) {
+                timeSpan.innerText = getCurrentTimeString();
+            }
+
+            // Render initial option chips
+            renderChips(MAIN_OPTIONS);
+
+            // Load saved chat history if exists
+            const savedHistory = localStorage.getItem('fit_hit_chat_history');
+            if (savedHistory) {
+                document.getElementById("chatMsgArea").innerHTML = savedHistory;
+            }
+
+            // Show launcher hint bubble after 4 seconds
+            setTimeout(function() {
+                const hint = document.getElementById("chatHintBubble");
+                // Only show if the chat window is closed and user hasn't explicitly closed it
+                const isHintClosed = sessionStorage.getItem('fit_hit_hint_closed');
+                const chatWin = document.getElementById("chatWindow");
+                if (hint && !chatWin.classList.contains("active") && !isHintClosed) {
+                    hint.classList.add("show");
+                }
+            }, 400);
+        });
+
+        function getCurrentTimeString() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            minutes = minutes < 10 ? '0'+minutes : minutes;
+            return hours + ':' + minutes + ' ' + ampm;
+        }
+
+        function toggleChatWindow() {
+            const chatWin = document.getElementById("chatWindow");
+            chatWin.classList.toggle("active");
+            
+            // Hide the hint bubble once chat is opened
+            const hint = document.getElementById("chatHintBubble");
+            if (hint) {
+                hint.classList.remove("show");
+            }
+            
+            // Auto scroll to bottom
+            const msgArea = document.getElementById("chatMsgArea");
+            msgArea.scrollTop = msgArea.scrollHeight;
+        }
+
+        function closeChatHint(e) {
+            e.stopPropagation(); // Prevent trigger btn click
+            const hint = document.getElementById("chatHintBubble");
+            if (hint) {
+                hint.classList.remove("show");
+            }
+            sessionStorage.setItem('fit_hit_hint_closed', 'true');
+        }
+
+        function renderChips(options) {
+            const container = document.getElementById("chatChipsContainer");
+            if (!container) return;
+            container.innerHTML = "";
+            options.forEach(opt => {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "chip-btn";
+                btn.innerText = opt;
+                btn.onclick = function() { selectChipOption(opt); };
+                container.appendChild(btn);
+            });
+        }
+
+        function selectChipOption(optionText) {
+            pushUserMessage(optionText);
+            
+            if (optionText === "← Back to Main Menu") {
+                renderChips(MAIN_OPTIONS);
+                const msgArea = document.getElementById("chatMsgArea");
+                const timeStr = getCurrentTimeString();
+                const welcomeBackHtml = `
+                    <div class="chat-bubble-container bot">
+                        <div class="chat-msg-avatar">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div style="position: relative;">
+                            <div class="chat-bubble">
+                                Main menu loaded. How else can I assist you, ${isUserAuthenticated ? `<strong>${currentUsername}</strong>` : 'Guest'}?
+                            </div>
+                            <span class="chat-msg-time">${timeStr}</span>
+                            <i class="fa-solid fa-volume-high speak-btn" title="Speak Text" onclick="speakText(this)"></i>
+                        </div>
+                    </div>
+                `;
+                msgArea.insertAdjacentHTML('beforeend', welcomeBackHtml);
+                msgArea.scrollTop = msgArea.scrollHeight;
+                saveChatHistory();
+                return;
+            }
+
+            generateBotResponse(optionText);
+
+            // Dynamically load sub-options after selection
+            if (optionText === "Gym Membership Plans") {
+                renderChips(["Starter Plan details", "Pro Strength details", "VIP Champion details", "← Back to Main Menu"]);
+            } else if (optionText === "Supplement Advisor Quiz") {
+                renderChips(["Muscle Gain Supplements", "Fat Loss Supplements", "Daily Wellness Supplements", "← Back to Main Menu"]);
+            } else if (optionText === "Gym Machinery & Equipment") {
+                renderChips(["Smith Machine Bench", "Linear Leg Press", "Spin Cardio Bike", "← Back to Main Menu"]);
+            } else if (optionText === "Book A Free Trial") {
+                renderChips(["Co-ed Zone slot", "Women-Only private studio", "Men-Only zone", "← Back to Main Menu"]);
+            } else {
+                renderChips(MAIN_OPTIONS);
+            }
+        }
+
+        function handleChatEnter(event) {
+            if (event.key === "Enter") {
+                sendUserMessage();
+            }
+        }
+
+        function sendUserMessage() {
+            const inputField = document.getElementById("chatInputField");
+            const text = inputField.value.trim();
+            if (text === "") return;
+
+            inputField.value = "";
+            pushUserMessage(text);
+            generateBotResponse(text);
+        }
+
+        function pushUserMessage(text) {
+            const msgArea = document.getElementById("chatMsgArea");
+            const timeStr = getCurrentTimeString();
+            
+            const userMsgHtml = `
+                <div class="chat-bubble-container user">
+                    <div class="chat-msg-avatar">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div>
+                        <div class="chat-bubble">
+                            ${text}
+                        </div>
+                        <span class="chat-msg-time">${timeStr}</span>
+                    </div>
+                </div>
+            `;
+            msgArea.insertAdjacentHTML('beforeend', userMsgHtml);
+            msgArea.scrollTop = msgArea.scrollHeight;
+            saveChatHistory();
+        }
+
+        function generateBotResponse(userText) {
+            const msgArea = document.getElementById("chatMsgArea");
+            
+            // Show typing indicator
+            const typingId = "typing-" + Date.now();
+            const typingHtml = `
+                <div class="chat-bubble-container bot" id="${typingId}">
+                    <div class="chat-msg-avatar">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div>
+                        <div class="chat-bubble">
+                            <div class="typing-indicator">
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            msgArea.insertAdjacentHTML('beforeend', typingHtml);
+            msgArea.scrollTop = msgArea.scrollHeight;
+
+            // Predefined responses based on categories and keyword matches
+            let botReply = "";
+            const lowerText = userText.toLowerCase();
+
+            // Check sub-option flows first
+            if (lowerText === "starter plan details") {
+                botReply = "The <strong>Starter Plan</strong> is ₹999/month. It offers access to the general gym floor, free weight training zones, and cardio machines. Great for beginners! You can click 'Buy Now' on our Homepage.";
+            } else if (lowerText === "pro strength details") {
+                botReply = "The <strong>Pro Strength Plan</strong> is ₹1,999/month. It includes all Starter benefits + premium locker access, steam bath sessions, and 1 general coach orientation.";
+            } else if (lowerText === "vip champion details") {
+                botReply = "The <strong>VIP Champion Plan</strong> is ₹3,499/month. Includes unlimited access, private studios, a personal nutrition consult, and a free premium protein shake per session!";
+            } else if (lowerText === "muscle gain supplements") {
+                botReply = "For building muscle, we recommend:<br>💪 <strong>Whey Protein:</strong> For recovery.<br>💪 <strong>Creatine Monohydrate:</strong> For raw power.<br>💪 <strong>Mass Gainer:</strong> For caloric surplus.<br>Check them out in our Store!";
+            } else if (lowerText === "fat loss supplements") {
+                botReply = "For fat loss, we recommend:<br>🔥 <strong>L-Carnitine:</strong> Enhances fat conversion to energy.<br>🔥 <strong>Pre-Workout:</strong> Increases caloric burn. Browse our store products!";
+            } else if (lowerText === "daily wellness supplements") {
+                botReply = "For daily health:<br>🌟 <strong>Multivitamins:</strong> Covers micro-nutrients.<br>🌟 <strong>Fish Oil (Omega-3):</strong> Joint and heart recovery. Browse our store catalog!";
+            } else if (lowerText === "smith machine bench") {
+                botReply = "The <strong>Smith Machine</strong> is on the Strength Floor. Targeted: Chest, shoulders, and squats. Tip: Secure safety hooks before liftoff!";
+            } else if (lowerText === "linear leg press") {
+                botReply = "The <strong>45° Leg Press</strong> is on the Free Weights Floor. Target: Quads & glutes. Caution: Never lock your knees at the top!";
+            } else if (lowerText === "spin cardio bike") {
+                botReply = "Our <strong>Spin Cycles</strong> are in the Cardio Zone. Target: Endurance & cardio. Adjust the seat height to hip-level before riding.";
+            } else if (lowerText === "co-ed zone slot") {
+                if (isUserAuthenticated) {
+                    botReply = `Slot booked for member <strong>${currentUsername}</strong>! Show code <strong>FIT-COED-${currentUsername.toUpperCase()}</strong> at the reception desk to redeem your pass.`;
+                } else {
+                    botReply = "Please <a href='/account' style='color:#ff5e3a; font-weight:700;'>Log In / Register</a> to generate a personalized member pass. Alternatively, show guest code <strong>FIT-COED-GUEST</strong>.";
+                }
+            } else if (lowerText === "women-only private studio") {
+                if (isUserAuthenticated) {
+                    botReply = `Slot booked for member <strong>${currentUsername}</strong>! Show code <strong>FIT-WOMEN-${currentUsername.toUpperCase()}</strong> at our private studio reception desk to redeem your pass.`;
+                } else {
+                    botReply = "Please <a href='/account' style='color:#ff5e3a; font-weight:700;'>Log In / Register</a> to generate a personalized member pass. Alternatively, show guest code <strong>FIT-WOMEN-GUEST</strong>.";
+                }
+            } else if (lowerText === "men-only zone") {
+                if (isUserAuthenticated) {
+                    botReply = `Slot booked for member <strong>${currentUsername}</strong>! Show code <strong>FIT-MEN-${currentUsername.toUpperCase()}</strong> at the main desk to redeem your pass.`;
+                } else {
+                    botReply = "Please <a href='/account' style='color:#ff5e3a; font-weight:700;'>Log In / Register</a> to generate a personalized member pass. Alternatively, show guest code <strong>FIT-MEN-GUEST</strong>.";
+                }
+            }
+            // Check main keyword flows
+            else if (lowerText.includes("membership") || lowerText.includes("plan") || lowerText.includes("price") || lowerText.includes("rate") || lowerText.includes("cost") || lowerText.includes("fee")) {
+                botReply = "We offer 3 budget-friendly membership plans:<br>⚡ <strong>Starter:</strong> ₹999/month (Co-ed gym access)<br>🔥 <strong>Pro Strength:</strong> ₹1,999/month (General access, cardio floor, locker, steam bath)<br>🏆 <strong>VIP Champion:</strong> ₹3,499/month (All access + personal trainer consults + free gym shake). You can view details on our Homepage!";
+                renderChips(["Starter Plan details", "Pro Strength details", "VIP Champion details", "← Back to Main Menu"]);
+            } else if (lowerText.includes("free trial") || lowerText.includes("trial") || lowerText.includes("book") || lowerText.includes("pass") || lowerText.includes("slot")) {
+                botReply = "Excellent choice! You can secure a <strong>Free Trial Pass</strong> instantly on our <strong>Classes</strong> page. Just open the booking modal, select your zone (such as Co-ed, Men-Only, or our Private Women-Only Studio), and generate your pass!";
+                renderChips(["Co-ed Zone slot", "Women-Only private studio", "Men-Only zone", "← Back to Main Menu"]);
+            } else if (lowerText.includes("supplement") || lowerText.includes("protein") || lowerText.includes("creatine") || lowerText.includes("quiz") || lowerText.includes("advisor")) {
+                botReply = "Unsure what supplement fits your diet? Visit our <strong>Products Store</strong> and take our interactive <strong>Supplement Advisor Quiz</strong> at the top! It filters matching products in real-time based on your fitness goals.";
+                renderChips(["Muscle Gain Supplements", "Fat Loss Supplements", "Daily Wellness Supplements", "← Back to Main Menu"]);
+            } else if (lowerText.includes("equipment") || lowerText.includes("machine") || lowerText.includes("dumbbell") || lowerText.includes("treadmill") || lowerText.includes("press")) {
+                botReply = "We house world-class equipment! Visit our brand new <strong>Equipment</strong> page to browse through Hammer Strength chest presses, 45° linear leg presses, squat rigs, and Concept2 rowers, including correct movement guides.";
+                renderChips(["Smith Machine Bench", "Linear Leg Press", "Spin Cardio Bike", "← Back to Main Menu"]);
+            } else if (lowerText.includes("coach") || lowerText.includes("trainer") || lowerText.includes("personal training") || lowerText.includes("instruct")) {
+                botReply = "Get trained by the best! Check out our certified expert trainers, their bio-details, specialties, and contact links directly on our <strong>About Us</strong> page.";
+                renderChips(MAIN_OPTIONS);
+            } else if (lowerText.includes("hour") || lowerText.includes("time") || lowerText.includes("open") || lowerText.includes("close") || lowerText.includes("timing") || lowerText.includes("day") || lowerText.includes("sunday")) {
+                botReply = "Here are our operating hours:<br>🗓️ <strong>Monday - Saturday:</strong> 5:00 AM - 10:00 PM<br>🗓️ <strong>Sunday:</strong> 6:00 AM - 12:00 PM<br>We look forward to seeing you sweat!";
+                renderChips(MAIN_OPTIONS);
+            } else if (lowerText.includes("complaint") || lowerText.includes("issue") || lowerText.includes("contact") || lowerText.includes("phone") || lowerText.includes("call") || lowerText.includes("email") || lowerText.includes("support")) {
+                botReply = "We are here to assist! Reach us directly at <strong>7719527242</strong> or email <strong>iamaditya1202@gmail.com</strong>. You can also drop a message with your phone number on our <strong>Contact</strong> page.";
+                renderChips(MAIN_OPTIONS);
+            } else if (lowerText.includes("who am i") || lowerText.includes("my account") || lowerText.includes("my pass") || lowerText.includes("my code") || lowerText.includes("my name") || lowerText.includes("username")) {
+                if (isUserAuthenticated) {
+                    botReply = `You are logged in as <strong>${currentUsername}</strong>.<br>🔑 Your active trial pass code: <strong>FIT-TRIAL-${currentUsername.toUpperCase()}</strong>.<br>Go to your <a href='/profile' style='color:#ff8c00; text-decoration:underline;'>Dashboard</a> to check off workouts and track referrals!`;
+                } else {
+                    botReply = "You are currently browsing as a guest. Please <a href='/account' style='color:#ff8c00; text-decoration:underline;'>Log In or Register</a> to unlock your dashboard and generate personalized member passes.";
+                }
+                renderChips(MAIN_OPTIONS);
+            } else if (lowerText.includes("hi") || lowerText.includes("hello") || lowerText.includes("hey") || lowerText.includes("hola")) {
+                botReply = isUserAuthenticated ? `Hello <strong>${currentUsername}</strong>! How can I help you reach your goals today?` : "Hello! I am your Fit-Hit assistant. What fitness details can I help you find today? Feel free to select any category chip above!";
+                renderChips(MAIN_OPTIONS);
+            } else {
+                botReply = "I'm not sure I fully understand that question. However, I can help you with:<br>• Membership rates<br>• Booking free trial passes<br>• Finding supplements & equipment details<br>• Operating hours<br>Please select from the options list above or rephrase your question!";
+                renderChips(MAIN_OPTIONS);
+            }
+
+            // Simulate bot processing delay
+            setTimeout(function() {
+                // Remove typing indicator
+                const typingNode = document.getElementById(typingId);
+                if (typingNode) typingNode.remove();
+
+                const timeStr = getCurrentTimeString();
+                const botMsgHtml = `
+                    <div class="chat-bubble-container bot">
+                        <div class="chat-msg-avatar">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div style="position: relative;">
+                            <div class="chat-bubble">
+                                ${botReply}
+                            </div>
+                            <span class="chat-msg-time">${timeStr}</span>
+                            <i class="fa-solid fa-volume-high speak-btn" title="Speak Text" onclick="speakText(this)"></i>
+                        </div>
+                    </div>
+                `;
+                msgArea.insertAdjacentHTML('beforeend', botMsgHtml);
+                msgArea.scrollTop = msgArea.scrollHeight;
+                saveChatHistory();
+            }, 800);
+        }
+
+        function speakText(btn) {
+            const container = btn.parentElement;
+            if (!container) return;
+            const bubble = container.querySelector('.chat-bubble');
+            if (!bubble) return;
+
+            // Strip HTML tags for clean speech text
+            const tempDiv = document.createElement("div");
+            tempDiv.innerHTML = bubble.innerHTML;
+            const cleanText = tempDiv.innerText || tempDiv.textContent;
+
+            // Cancel active speech synthesis to prevent queuing overlap
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(cleanText);
+                utterance.rate = 1.0;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function saveChatHistory() {
+            const msgArea = document.getElementById("chatMsgArea");
+            if (msgArea && window.localStorage) {
+                // Keep only the actual bubbles (exclude temporary elements if any)
+                localStorage.setItem('fit_hit_chat_history', msgArea.innerHTML);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,652 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'main' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Calculators - Fit-Hit Gym</title>
+    <!-- Outfit Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/ccdbd762c2.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #0c0c0e;
+            font-family: 'Outfit', sans-serif;
+            color: #fff;
+        }
+
+        .calc-header-section {
+            background: linear-gradient(rgba(10, 10, 12, 0.82), rgba(10, 10, 12, 0.95)), url('{% static "images/gym_bg_main.png" %}');
+            background-size: cover;
+            background-position: center;
+            padding: 80px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .calc-header-section h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin: 0 0 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .calc-header-section p {
+            font-size: 1.1rem;
+            color: #a1a1a6;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* BMI Calculator Section */
+        .bmi-section {
+            max-width: 1100px;
+            margin: 60px auto 100px;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .bmi-container {
+            background: rgba(20, 20, 22, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 50px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .bmi-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .bmi-form h3 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #fff;
+        }
+
+        .bmi-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .bmi-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .bmi-group label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #a1a1a6;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bmi-group input, .bmi-group select {
+            padding: 14px 18px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: 'Outfit', sans-serif;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .bmi-group select option {
+            background-color: #1c1c1e;
+            color: #fff;
+        }
+
+        .bmi-group input:focus, .bmi-group select:focus {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: #ff5e3a;
+            box-shadow: 0 0 15px rgba(255, 94, 58, 0.2);
+        }
+
+        .bmi-btn {
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            color: #fff;
+            border: none;
+            padding: 16px 20px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: inherit;
+        }
+
+        .bmi-btn:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 69, 0, 0.45);
+        }
+
+        /* BMI Result Panel */
+        .bmi-result-panel {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 290px;
+            box-sizing: border-box;
+        }
+
+        .bmi-score-wrapper {
+            margin-bottom: 15px;
+        }
+
+        .bmi-score {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #ff5e3a;
+            line-height: 1;
+        }
+
+        .bmi-category {
+            font-size: 1.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 10px 0;
+            color: #fff;
+        }
+
+        .bmi-advice {
+            font-size: 0.95rem;
+            color: #a1a1a6;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Upgraded Calculator Tabs */
+        .calc-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .calc-tab {
+            padding: 10px 18px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 30px;
+            color: #a1a1a6;
+            font-weight: 700;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .calc-tab:hover {
+            color: #fff;
+            border-color: rgba(255, 94, 58, 0.4);
+            background-color: rgba(255, 94, 58, 0.05);
+        }
+
+        .calc-tab.active {
+            background: linear-gradient(135deg, #ff4500, #ff8c00);
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(255, 69, 0, 0.3);
+        }
+
+        .calc-pane {
+            display: none;
+        }
+
+        .calc-pane.active {
+            display: block;
+            animation: fadeInCalc 0.4s ease-out forwards;
+        }
+
+        @keyframes fadeInCalc {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 900px) {
+            .bmi-container {
+                grid-template-columns: 1fr;
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .bmi-inputs {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="calc-header-section">
+        <h1>Fitness Calculators</h1>
+        <p>Know your numbers, target your ideal training range, and fast-track your health goals.</p>
+    </div>
+
+    <!-- Main calculator interface -->
+    <div class="bmi-section">
+        <div class="bmi-container">
+            <div class="bmi-form">
+                <div class="calc-tabs">
+                    <div class="calc-tab active" id="tab-bmi" onclick="switchCalcTab('bmi')">BMI Calculator</div>
+                    <div class="calc-tab" id="tab-calorie" onclick="switchCalcTab('calorie')">Calorie Intake</div>
+                    <div class="calc-tab" id="tab-macro" onclick="switchCalcTab('macro')">Macro Split Finder</div>
+                </div>
+
+                <!-- BMI Pane -->
+                <div class="calc-pane active" id="pane-bmi">
+                    <h3>Body Mass Index (BMI)</h3>
+                    <p style="font-size: 0.9rem; color: #a1a1a6; margin-bottom: 20px;">BMI estimates body fat composition based on height and weight.</p>
+                    <div class="bmi-inputs" style="margin-bottom: 20px;">
+                        <div class="bmi-group">
+                            <label for="bmi-weight">Weight (kg)</label>
+                            <input type="number" id="bmi-weight" placeholder="e.g., 70" min="10" max="300">
+                        </div>
+                        <div class="bmi-group">
+                            <label for="bmi-height">Height (cm)</label>
+                            <input type="number" id="bmi-height" placeholder="e.g., 175" min="50" max="250">
+                        </div>
+                    </div>
+                    <div class="bmi-inputs" style="margin-bottom: 20px;">
+                        <div class="bmi-group">
+                            <label for="bmi-age">Age</label>
+                            <input type="number" id="bmi-age" placeholder="e.g., 25" min="5" max="120">
+                        </div>
+                        <div class="bmi-group">
+                            <label for="bmi-gender">Gender</label>
+                            <select id="bmi-gender">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="button" class="bmi-btn" onclick="calculateUserBMI()">
+                        <i class="fa-solid fa-calculator"></i> Calculate BMI
+                    </button>
+                </div>
+
+                <!-- Calorie Intake Pane -->
+                <div class="calc-pane" id="pane-calorie">
+                    <h3>Daily Calorie Calculator (BMR)</h3>
+                    <p style="font-size: 0.9rem; color: #a1a1a6; margin-bottom: 20px;">Find out exactly how many calories you need daily to lose, maintain, or gain weight.</p>
+                    <div class="bmi-inputs" style="margin-bottom: 20px;">
+                        <div class="bmi-group">
+                            <label for="cal-weight">Weight (kg)</label>
+                            <input type="number" id="cal-weight" placeholder="e.g., 70">
+                        </div>
+                        <div class="bmi-group">
+                            <label for="cal-height">Height (cm)</label>
+                            <input type="number" id="cal-height" placeholder="e.g., 175">
+                        </div>
+                    </div>
+                    <div class="bmi-inputs" style="margin-bottom: 20px;">
+                        <div class="bmi-group">
+                            <label for="cal-age">Age (Years)</label>
+                            <input type="number" id="cal-age" placeholder="e.g., 25">
+                        </div>
+                        <div class="bmi-group">
+                            <label for="cal-gender">Gender</label>
+                            <select id="cal-gender">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="bmi-inputs" style="margin-bottom: 20px;">
+                        <div class="bmi-group">
+                            <label for="cal-activity">Activity Level</label>
+                            <select id="cal-activity">
+                                <option value="1.2">Sedentary (No exercise)</option>
+                                <option value="1.375">Light (Exercise 1-3 days/wk)</option>
+                                <option value="1.55">Moderate (Exercise 3-5 days/wk)</option>
+                                <option value="1.725">Active (Exercise 6-7 days/wk)</option>
+                            </select>
+                        </div>
+                        <div class="bmi-group">
+                            <label for="cal-goal">Fitness Goal</label>
+                            <select id="cal-goal">
+                                <option value="lose">Weight Loss (Deficit)</option>
+                                <option value="maintain">Weight Maintenance</option>
+                                <option value="gain">Weight Gain (Surplus)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="button" class="bmi-btn" onclick="calculateUserCalories()">
+                        <i class="fa-solid fa-fire"></i> Calculate Calories
+                    </button>
+                </div>
+
+                <!-- Macro Split Pane -->
+                <div class="calc-pane" id="pane-macro">
+                    <h3>Macro Split Finder</h3>
+                    <p style="font-size: 0.9rem; color: #a1a1a6; margin-bottom: 20px;">Calculate exact daily gram targets for Protein, Carbohydrates, and Fats based on goals.</p>
+                    <div class="bmi-inputs" style="margin-bottom: 20px;">
+                        <div class="bmi-group">
+                            <label for="macro-weight">Weight (kg)</label>
+                            <input type="number" id="macro-weight" placeholder="e.g., 70" min="30" max="250">
+                        </div>
+                        <div class="bmi-group">
+                            <label for="macro-height">Height (cm)</label>
+                            <input type="number" id="macro-height" placeholder="e.g., 175" min="100" max="250">
+                        </div>
+                    </div>
+                    <div class="bmi-inputs" style="margin-bottom: 20px;">
+                        <div class="bmi-group">
+                            <label for="macro-age">Age (Years)</label>
+                            <input type="number" id="macro-age" placeholder="e.g., 25" min="12" max="100">
+                        </div>
+                        <div class="bmi-group">
+                            <label for="macro-gender">Gender</label>
+                            <select id="macro-gender">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="bmi-inputs" style="margin-bottom: 20px;">
+                        <div class="bmi-group">
+                            <label for="macro-activity">Activity Level</label>
+                            <select id="macro-activity">
+                                <option value="1.2">Sedentary (No exercise)</option>
+                                <option value="1.375">Light (Exercise 1-3 days/wk)</option>
+                                <option value="1.55">Moderate (Exercise 3-5 days/wk)</option>
+                                <option value="1.725">Active (Exercise 6-7 days/wk)</option>
+                            </select>
+                        </div>
+                        <div class="bmi-group">
+                            <label for="macro-goal">Fitness Goal</label>
+                            <select id="macro-goal">
+                                <option value="lose">Fat Loss (Deficit)</option>
+                                <option value="maintain">Weight Maintenance</option>
+                                <option value="gain">Lean Bulking (Surplus)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="button" class="bmi-btn" onclick="calculateMacros()">
+                        <i class="fa-solid fa-scale-balanced"></i> Calculate Macros
+                    </button>
+                </div>
+            </div>
+            
+            <div class="bmi-result-panel">
+                <!-- Standard text/score result (for BMI and Calorie) -->
+                <div id="standard-result-view" style="width: 100%;">
+                    <div class="bmi-score-wrapper">
+                        <div class="bmi-score" id="result-score">--.-</div>
+                    </div>
+                    <div class="bmi-category" id="result-category">Enter details</div>
+                    <p class="bmi-advice" id="result-advice">Calculate your stats to get personal health and training advice instantly.</p>
+                </div>
+
+                <!-- Macro results split view (for Macro tab) -->
+                <div id="macro-result-view" style="display: none; width: 100%;">
+                    <div class="bmi-score-wrapper">
+                        <div class="bmi-score" id="macroCalVal" style="font-size: 2.6rem;">0 kcal</div>
+                    </div>
+                    <div class="bmi-category" style="margin-bottom: 20px;">Daily Target Split</div>
+                    
+                    <div class="macro-bars" style="width: 100%; display: flex; flex-direction: column; gap: 16px; text-align: left;">
+                        <!-- Protein -->
+                        <div class="macro-bar-row" style="display: flex; flex-direction: column; gap: 6px;">
+                            <div class="macro-bar-info" style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
+                                <span class="macro-label" style="color: #d1d1d6; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-circle" style="color: #ff5e3a; font-size: 0.6rem;"></i> Protein</span>
+                                <span class="macro-value" id="macroProtVal" style="color: #fff;">0g (30%)</span>
+                            </div>
+                            <div class="macro-track" style="background-color: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06); height: 12px; border-radius: 6px; overflow: hidden;">
+                                <div class="macro-fill protein" id="macroProtBar" style="width: 0%; height: 100%; border-radius: 6px; background-color: #ff5e3a; transition: width 0.8s ease;"></div>
+                            </div>
+                        </div>
+                        <!-- Carbs -->
+                        <div class="macro-bar-row" style="display: flex; flex-direction: column; gap: 6px;">
+                            <div class="macro-bar-info" style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
+                                <span class="macro-label" style="color: #d1d1d6; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-circle" style="color: #f1c40f; font-size: 0.6rem;"></i> Carbohydrates</span>
+                                <span class="macro-value" id="macroCarbVal" style="color: #fff;">0g (40%)</span>
+                            </div>
+                            <div class="macro-track" style="background-color: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06); height: 12px; border-radius: 6px; overflow: hidden;">
+                                <div class="macro-fill carbs" id="macroCarbBar" style="width: 0%; height: 100%; border-radius: 6px; background-color: #f1c40f; transition: width 0.8s ease;"></div>
+                            </div>
+                        </div>
+                        <!-- Fats -->
+                        <div class="macro-bar-row" style="display: flex; flex-direction: column; gap: 6px;">
+                            <div class="macro-bar-info" style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
+                                <span class="macro-label" style="color: #d1d1d6; display: flex; align-items: center; gap: 6px;"><i class="fa-solid fa-circle" style="color: #2ecc71; font-size: 0.6rem;"></i> Fats</span>
+                                <span class="macro-value" id="macroFatVal" style="color: #fff;">0g (30%)</span>
+                            </div>
+                            <div class="macro-track" style="background-color: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06); height: 12px; border-radius: 6px; overflow: hidden;">
+                                <div class="macro-fill fats" id="macroFatBar" style="width: 0%; height: 100%; border-radius: 6px; background-color: #2ecc71; transition: width 0.8s ease;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab Switch logic
+        function switchCalcTab(tabName) {
+            document.querySelectorAll('.calc-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.calc-pane').forEach(pane => pane.classList.remove('active'));
+            
+            document.getElementById('tab-' + tabName).classList.add('active');
+            document.getElementById('pane-' + tabName).classList.add('active');
+
+            if (tabName === 'macro') {
+                document.getElementById('standard-result-view').style.display = 'none';
+                document.getElementById('macro-result-view').style.display = 'block';
+            } else {
+                document.getElementById('standard-result-view').style.display = 'block';
+                document.getElementById('macro-result-view').style.display = 'none';
+
+                // Reset result panel on toggle
+                document.getElementById('result-score').innerText = '--.-';
+                document.getElementById('result-category').innerText = 'Enter details';
+                document.getElementById('result-category').style.color = '#fff';
+                document.getElementById('result-score').style.color = '#ff5e3a';
+                document.getElementById('result-advice').innerText = 'Calculate your stats to get personal health and training advice instantly.';
+            }
+        }
+
+        // BMI logic
+        function calculateUserBMI() {
+            const weight = parseFloat(document.getElementById('bmi-weight').value);
+            const height = parseFloat(document.getElementById('bmi-height').value) / 100;
+            
+            if (isNaN(weight) || isNaN(height) || weight <= 0 || height <= 0) {
+                alert('Please enter valid weight and height measurements.');
+                return;
+            }
+
+            const bmi = (weight / (height * height)).toFixed(1);
+            document.getElementById('result-score').innerText = bmi;
+            
+            let category = '';
+            let advice = '';
+            let color = '';
+
+            if (bmi < 18.5) {
+                category = 'Underweight';
+                advice = 'You are underweight. Consider our Hypertrophy & Muscle Training programs to build lean muscular mass safely.';
+                color = '#3498db';
+            } else if (bmi >= 18.5 && bmi < 24.9) {
+                category = 'Normal Weight';
+                advice = 'Fantastic job! Your weight is in the healthy zone. Our Basic Fitness and Yoga programs will help you maintain optimal stamina.';
+                color = '#2ecc71';
+            } else if (bmi >= 25 && bmi < 29.9) {
+                category = 'Overweight';
+                advice = 'You are slightly overweight. We recommend integrating HIIT Cardio and Strength Conditioning into your weekly routine.';
+                color = '#f1c40f';
+            } else {
+                category = 'Obese';
+                advice = 'Obesity increases risk of health conditions. Join our structured weight management program and consult our coaches.';
+                color = '#e74c3c';
+            }
+
+            document.getElementById('result-category').innerText = category;
+            document.getElementById('result-category').style.color = color;
+            document.getElementById('result-score').style.color = color;
+            document.getElementById('result-advice').innerText = advice;
+        }
+
+        // BMR Calorie logic
+        function calculateUserCalories() {
+            const weight = parseFloat(document.getElementById('cal-weight').value);
+            const height = parseFloat(document.getElementById('cal-height').value);
+            const age = parseFloat(document.getElementById('cal-age').value);
+            const gender = document.getElementById('cal-gender').value;
+            const activity = parseFloat(document.getElementById('cal-activity').value);
+            const goal = document.getElementById('cal-goal').value;
+
+            if (isNaN(weight) || isNaN(height) || isNaN(age) || weight <= 0 || height <= 0 || age <= 0) {
+                alert('Please enter valid measurements for all inputs.');
+                return;
+            }
+
+            // Harris-Benedict BMR Equation
+            let bmr = 0;
+            if (gender === 'male') {
+                bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+            } else {
+                bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+            }
+
+            const tdee = Math.round(bmr * activity);
+            let targetCalories = tdee;
+            let advice = '';
+            let category = '';
+            let color = '#ff5e3a';
+
+            if (goal === 'lose') {
+                targetCalories = tdee - 500;
+                category = 'Caloric Deficit';
+                advice = `Your target intake is ${targetCalories} kcal/day (Maintenance: ${tdee} kcal). This deficit promotes safe fat loss while retaining lean muscle. Check out our Cardio & Yoga classes.`;
+                color = '#e74c3c';
+            } else if (goal === 'gain') {
+                targetCalories = tdee + 350;
+                category = 'Caloric Surplus';
+                advice = `Your target intake is ${targetCalories} kcal/day (Maintenance: ${tdee} kcal). This surplus fuels muscle hypertrophy. Perfect for our Muscle Training and Bodybuilding programs.`;
+                color = '#2ecc71';
+            } else {
+                category = 'Maintain Weight';
+                advice = `Your target intake is ${targetCalories} kcal/day to maintain current composition. Focus on balanced macros and regular metabolic fitness routines to stay fit.`;
+                color = '#f1c40f';
+            }
+
+            document.getElementById('result-score').innerText = targetCalories;
+            document.getElementById('result-score').style.color = '#ff5e3a';
+            document.getElementById('result-category').innerText = category;
+            document.getElementById('result-category').style.color = color;
+            document.getElementById('result-advice').innerText = advice;
+        }
+
+        // Macro Split logic
+        function calculateMacros() {
+            const weight = parseFloat(document.getElementById('macro-weight').value);
+            const height = parseFloat(document.getElementById('macro-height').value);
+            const age = parseFloat(document.getElementById('macro-age').value);
+            const gender = document.getElementById('macro-gender').value;
+            const activity = parseFloat(document.getElementById('macro-activity').value);
+            const goal = document.getElementById('macro-goal').value;
+
+            if (isNaN(weight) || isNaN(height) || isNaN(age) || weight <= 0 || height <= 0 || age <= 0) {
+                alert('Please input valid measurements.');
+                return;
+            }
+
+            // Harris-Benedict BMR Formula
+            let bmr = 0;
+            if (gender === 'male') {
+                bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+            } else {
+                bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+            }
+
+            const tdee = Math.round(bmr * activity);
+            let targetCalories = tdee;
+
+            // Target split ratios (Default: maintenance is 30% Prot, 40% Carb, 30% Fat)
+            let splitProt = 0.30;
+            let splitCarb = 0.40;
+            let splitFat = 0.30;
+
+            if (goal === 'lose') {
+                targetCalories = tdee - 500;
+                // High protein deficit: 40% Prot, 35% Carb, 25% Fat
+                splitProt = 0.40;
+                splitCarb = 0.35;
+                splitFat = 0.25;
+            } else if (goal === 'gain') {
+                targetCalories = tdee + 350;
+                // Bulking: 25% Prot, 50% Carb, 25% Fat
+                splitProt = 0.25;
+                splitCarb = 0.50;
+                splitFat = 0.25;
+            }
+
+            // Gram calculations: Prot (4kcal/g), Carb (4kcal/g), Fat (9kcal/g)
+            const protGrams = Math.round((targetCalories * splitProt) / 4);
+            const carbGrams = Math.round((targetCalories * splitCarb) / 4);
+            const fatGrams = Math.round((targetCalories * splitFat) / 9);
+
+            // Display results
+            document.getElementById('macroCalVal').innerText = targetCalories + " kcal";
+            
+            document.getElementById('macroProtVal').innerText = `${protGrams}g (${Math.round(splitProt*100)}%)`;
+            document.getElementById('macroCarbVal').innerText = `${carbGrams}g (${Math.round(splitCarb*100)}%)`;
+            document.getElementById('macroFatVal').innerText = `${fatGrams}g (${Math.round(splitFat*100)}%)`;
+
+            document.getElementById('macroProtBar').style.width = Math.round(splitProt*100) + "%";
+            document.getElementById('macroCarbBar').style.width = Math.round(splitCarb*100) + "%";
+            document.getElementById('macroFatBar').style.width = Math.round(splitFat*100) + "%";
+        }
+    </script>
+</body>
+</html>
+{% endblock %}
