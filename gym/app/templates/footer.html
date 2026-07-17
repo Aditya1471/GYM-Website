@@ -180,14 +180,53 @@
             color: #636366;
         }
  
+        .footer-links-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px 20px;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
         @media (max-width: 768px) {
+            .footer {
+                padding: 50px 20px 30px;
+            }
             .row5 {
                 flex-direction: column;
-                gap: 30px;
+                align-items: center;
+                text-align: center;
+                gap: 40px;
             }
- 
             .footer-col {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
                 width: 100%;
+            }
+            .footer-col h4::before {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .footer-links-grid {
+                justify-content: center;
+                width: 100%;
+                max-width: 320px;
+            }
+            .footer-col img {
+                margin-bottom: 25px;
+            }
+            .social-links {
+                justify-content: center;
+            }
+            .contact-info {
+                align-items: center;
+                width: 100%;
+            }
+            .contact-info li {
+                justify-content: center;
+                text-align: center;
             }
         }
     </style>
@@ -198,7 +237,7 @@
             <div class="row5">
                 <div class="footer-col">
                     <img src="{% static 'images/fit-hit.png' %}" alt="Logo">
-                    <ul>
+                    <ul class="footer-links-grid">
                         <li><a href="/index"><i class="fa fa-home"></i> Home</a></li>
                         <li><a href="/classes"><i class="fas fa-save"></i> Classes</a></li>
                         <li><a href="/product"><i class="fas fa-cart-arrow-down"></i> Products</a></li>
