@@ -818,8 +818,21 @@
             });
         }
 
-        document.querySelector('.prev').addEventListener('click', moveToPrevSlide);
-        document.querySelector('.next').addEventListener('click', moveToNextSlide);
+        let autoSlideInterval = setInterval(moveToNextSlide, 6000); // Slide every 6 seconds
+
+        function resetAutoSlide() {
+            clearInterval(autoSlideInterval);
+            autoSlideInterval = setInterval(moveToNextSlide, 6000);
+        }
+
+        document.querySelector('.prev').addEventListener('click', () => {
+            moveToPrevSlide();
+            resetAutoSlide();
+        });
+        document.querySelector('.next').addEventListener('click', () => {
+            moveToNextSlide();
+            resetAutoSlide();
+        });
         updateSlidePosition();
     </script>
 
