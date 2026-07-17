@@ -281,6 +281,60 @@
             text-align: center;
             margin: 40px 0;
         }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 20px 10px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            thead {
+                display: none;
+            }
+            tr {
+                margin-bottom: 20px;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                border-radius: 16px;
+                padding: 15px;
+                background-color: rgba(255, 255, 255, 0.01);
+            }
+            td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                padding: 12px 0;
+                text-align: right;
+            }
+            td:last-child {
+                border-bottom: none;
+            }
+            td::before {
+                content: attr(data-label);
+                font-weight: 700;
+                text-transform: uppercase;
+                font-size: 0.75rem;
+                color: #ff8c00;
+                float: left;
+            }
+            .product-image-cell {
+                width: auto;
+                justify-content: flex-end;
+            }
+            .actions {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .btn-primary, .bt {
+                max-width: 100%;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -299,7 +353,7 @@
                 <tbody>
                     {% for cart_item in cart_items %}
                     <tr>
-                        <td>
+                        <td data-label="Product">
                             <div class="product-image-cell">
                                 {% if cart_item.product.image %}
                                     <img src="{{ cart_item.product.image.url }}" alt="{{ cart_item.product.name }}" width="80" height="80">
@@ -309,15 +363,15 @@
                                 <span class="product-name">{{ cart_item.product.name }}</span>
                             </div>
                         </td>
-                        <td>
+                        <td data-label="Quantity">
                             <div class="quantity-control">
                                 <a class="dec" href="{% url 'adjust_cart_item' cart_item.id 'decrease' %}"><i class="fa-solid fa-minus"></i></a>
                                 <span>{{ cart_item.quantity }}</span>
                                 <a class="inc" href="{% url 'adjust_cart_item' cart_item.id 'increase' %}"><i class="fa-solid fa-plus"></i></a>
                             </div>
                         </td>
-                        <td>₹{{ cart_item.total_price }}</td>
-                        <td>
+                        <td data-label="Price">₹{{ cart_item.total_price }}</td>
+                        <td data-label="Actions">
                             <form action="{% url 'remove_from_cart' cart_item.id %}" method="post" style="margin:0; padding:0; display:inline-block; border:none; background:none; box-shadow:none;">
                                 {% csrf_token %}
                                 <button class="button" type="submit">

@@ -728,6 +728,26 @@
                 align-items: flex-start;
             }
         }
+
+        @media (max-width: 1024px) {
+            .pricing-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            .stats-section {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-section {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
